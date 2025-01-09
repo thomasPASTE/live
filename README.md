@@ -25,6 +25,7 @@ VDO.Ninja brings peer-to-peer technology to OBS and other studio software, enabl
 * 💬 [Live Support Discord](https://discord.vdo.ninja)
 * 📚 [Documentation](https://docs.vdo.ninja)
 * 🎯 [Subreddit](https://reddit.com/r/vdoninja)
+* 🧯 [Backup Deployment](https://backup.vdo.ninja)
 * 📱 Basic versions also available on [App Store](https://apps.apple.com/us/app/vdo-ninja/id1607609685) and [Play Store](https://play.google.com/store/apps/details?id=flutter.vdo.ninja)
 
 ## How to Use 📝
