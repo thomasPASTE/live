@@ -27,13 +27,6 @@ VDO.Ninja brings peer-to-peer technology to OBS and other studio software, enabl
 * 🎯 [Subreddit](https://reddit.com/r/vdoninja)
 * 📱 Basic versions also available on [App Store](https://apps.apple.com/us/app/vdo-ninja/id1607609685) and [Play Store](https://play.google.com/store/apps/details?id=flutter.vdo.ninja)
 
-## Alternative versions of VDO.Ninja
-* 🪟 [Mixer App with custom layouts](https://vdo.ninja/mixer)
-* 🏹 [WHIP/WHEP client](https://vdo.ninja/whip)
-* 📈 [Sharable Whiteboard](https://vdo.ninja/whiteboard)
-* 🕹️ [ESports Feed Manager](https://versus.cam)
-* 🌃 [Alpha-version updated nightly](https://vdo.ninja/alpha)
-
 ## How to Use 📝
 
 You can get started by just opening [VDO.Ninja](https://vdo.ninja/) in your browser and selecting Add your Camera to OBS.
@@ -43,6 +36,13 @@ You can get started by just opening [VDO.Ninja](https://vdo.ninja/) in your brow
 * 📖 [Getting Started](https://docs.vdo.ninja/getting-started)
 
 Join the [Discord](https://discord.vdo.ninja) for community exhibitions, discussions, support, and feature updates.
+
+## Alternative versions of VDO.Ninja
+* 🪟 [Mixer App with custom layouts](https://vdo.ninja/mixer)
+* 🏹 [WHIP/WHEP client](https://vdo.ninja/whip)
+* 📈 [Sharable Whiteboard](https://vdo.ninja/whiteboard)
+* 🕹️ [ESports Feed Manager](https://versus.cam)
+* 🌃 [Alpha-version updated nightly](https://vdo.ninja/alpha)
 
 ## What's in this repo
 This repo contains the web client software for VDO.Ninja, along with many sample apps that leverage its IFRAME API. A sample config file and instructions for setting up an optional TURN video relay server is also provided here. The user documentation for VDO.Ninja itself is found at docs.vdo.ninja.
