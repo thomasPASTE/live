@@ -16,7 +16,8 @@ VDO.Ninja brings peer-to-peer technology to OBS and other studio software, enabl
 * ⚡ High-quality video with super low latency
 * 💪 Director control room with group chat
 * 📱 Smartphone wireless webcam capabilities
-* 🆓 Free web-based app and managed service at [vdo.ninja](https://vdo.ninja)
+* 🌐 Supports WHIP/WHEP and self-hosted SFUs
+* 🆓 Free software. Free managed services. Free support.
 
 <img src="https://user-images.githubusercontent.com/2575698/120865595-56de3b80-c55c-11eb-8b98-60c59ae0f904.png" height="300" />
 
