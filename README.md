@@ -1,7 +1,5 @@
 
-# VDO.Ninja 🎥  <img src="https://user-images.githubusercontent.com/2575698/124821455-bbfec580-df3c-11eb-9641-3d036cdd6c41.png" width="200" />
-
-
+<img src="https://user-images.githubusercontent.com/2575698/124821455-bbfec580-df3c-11eb-9641-3d036cdd6c41.png" width="200" />
 [![GitHub Repo stars](https://img.shields.io/github/stars/steveseguin/vdoninja?style=social)](https://github.com/steveseguin/vdoninja)
 [![GitHub forks](https://img.shields.io/github/forks/steveseguin/vdoninja?style=social)](https://github.com/steveseguin/vdoninja/fork)
 [![Share on Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fsteveseguin%2Fvdoninja)](https://twitter.com/intent/tweet?text=Check%20out%20VDO.Ninja%20-%20Peer-to-peer%20video%20streaming%20for%20OBS%20and%20more!&url=https%3A%2F%2Fgithub.com%2Fsteveseguin%2Fvdoninja) [![Hacker News](https://img.shields.io/badge/Hacker%20News-Share-orange)](https://news.ycombinator.com/submitlink?u=https%3A%2F%2Fgithub.com%2Fsteveseguin%2Fvdoninja&t=VDO.Ninja%3A%20P2P%20Video%20Streaming%20for%20OBS)
