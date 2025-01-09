@@ -33,7 +33,7 @@ You can get started by just opening [VDO.Ninja](https://vdo.ninja/) in your brow
 
 * 🎥 [Basic Intro Video](https://www.youtube.com/watch?v=QaA_6aOP9z8&list=PLWodc2tCfAH1l_LDvEyxEqFf42hOBKqQM&index=1)
 * 📺 [YouTube Video Tutorials](https://www.youtube.com/watch?v=mQ1Jdhf5aYg&list=PL8VJWj2-XLFpFu3G35Hdm1nKZ2xn9_0_8)
-* 📖 [Getting Started](https://docs.vdo.ninja/getting-started)
+* 📖 [Getting Started Documentation](https://docs.vdo.ninja/getting-started)
 
 Join the [Discord](https://discord.vdo.ninja) for community exhibitions, discussions, support, and feature updates.
 
