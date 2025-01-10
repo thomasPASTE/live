@@ -1573,6 +1573,11 @@
 			stop: function( event, ui ) {saveSession();},
 			distance: 20
 		});
+		
+		 $("#containermenu").on('wheel', function(e) {
+			e.preventDefault();
+			$(this).scrollLeft($(this).scrollLeft() + e.originalEvent.deltaY);
+		});
 	});
 	
 	function swapNodes(n1, n2) {
@@ -2542,7 +2547,10 @@
 	function loadIframe(){
 		if (iframe){return;}
 		iframe = document.createElement("iframe");
-		iframe.allow = "autoplay;camera;microphone;fullscreen;picture-in-picture;display-capture;";
+		iframe.allow = "autoplay;camera;microphone;fullscreen;picture-in-picture;display-capture;screen-wake-lock;accelerometer;midi;geolocation;gyroscope;";
+		iframe.setAttribute("allowtransparency", "true");
+		iframe.setAttribute("crossorigin", "anonymous");
+		iframe.setAttribute("credentialless", "true");
 		iframe.id = "vdoninja";
 		
 		roomname = sanitizeRoomName(roomname);

@@ -30,6 +30,8 @@
 		<meta name="stance-on-war" content="Steve Seguin condemns Russia's brutal invasion of Ukraine 💙💛." />
 		<meta name="robots" content="index, follow">
 		<link rel="canonical" href="https://vdo.ninja/">
+		<link rel="author" href="/about" />
+		<link rel="me" href="https://vdo.ninja/about" />
 		
 		<!-- Primary Meta Tags -->
 		<title>VDO.Ninja</title>
@@ -37,9 +39,10 @@
 		<meta name="description" content="Bring live video from your smartphone, computer, or friends directly into your Studio. 100% free." />
 		<meta name="author" content="Steve Seguin" />
 		
+		
 		<meta name="msapplication-TileColor" content="#da532c" />
 		<meta name="theme-color" content="#0f131d" />
-		<link rel="stylesheet" href="./main.css?ver=398" />
+		<link rel="stylesheet" href="./main.css?ver=400" />
 		<script type="text/javascript" crossorigin="anonymous" src="./thirdparty/adapter.js"></script>
 		
 		<link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon" />
@@ -47,6 +50,7 @@
 		<link id="favicon2" rel="icon" type="image/png" sizes="16x16" href="./media/favicon-16x16.png" />
 		<link id="favicon3" rel="icon" href="./media/favicon.ico" />
 		<link id="thumbnailUrl" itemprop="thumbnailUrl" href="./media/vdoNinja_logo_full.png" />
+		<link rel="alternate" type="text/markdown" href="/rawdoc.md" title="Developer and User Documentation">
 
 		<!-- X (Twitter) Card Tags -->
 		<meta name="twitter:card" content="summary_large_image">
@@ -76,10 +80,9 @@
 		<span itemprop="thumbnail" itemscope itemtype="http://schema.org/ImageObject">
 			<link itemprop="url" href="./media/vdoNinja_logo_full.png" />
 		</span>
-		
 		<script type="text/javascript" crossorigin="anonymous"  src="./thirdparty/CodecsHandler.js?ver=28"></script>
 		<script type="text/javascript" crossorigin="anonymous" src="./thirdparty/aes.js"></script>
-		<script type="text/javascript" crossorigin="anonymous" src="./webrtc.js?ver=840"></script>
+		<script type="text/javascript" crossorigin="anonymous" src="./webrtc.js?ver=841"></script>
 		<input id="zoomSlider" type="range" style="display: none;" />
 		<span id="electronDragZone" style="pointer-events: none; z-index:-10; position:absolute;top:0;left:0;width:100%;height:2%;-webkit-app-region: drag;min-height:20px;"></span>
 		<div id="header">
@@ -160,9 +163,9 @@
 					<div id="unmuteSelf" title="Hear yourself at 50% volume" alt="Hear yourself at 50% volume" aria-label="Hear Yourself" onmousedown="event.preventDefault(); event.stopPropagation();"  onclick="toggleDirectFeedback()"  tabindex="2" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="hidden float" style="cursor: pointer;" >
                         <i id="unmuteSelftoggle" class="toggleSize las la-podcast"></i>
                     </div>
-					<div id="mediafileshare" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Stream a media file" aria-label="Stream a media file" alt="Stream a media file to others" onclick="getById('fileselector2').click();" tabindex="2" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="float hidden" style="cursor: pointer;">
+					<div id="mediafileshare" onmousedown="event.preventDefault(); event.stopPropagation();"  title="Select and stream a media file" aria-label="Stream a media file" alt="Stream a media file to others" onclick="getById('fileselector3').click();" tabindex="2" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="float hidden" style="cursor: pointer;">
                         <i id="mediafilesharetoggle" onmousedown="event.preventDefault(); event.stopPropagation();"  class="toggleSize las la-file-video"></i>
-						<input id="fileselector2" class="hidden" onchange="session.changePublishFile(this,event);" type="file" accept="video/*,audio/*" alt="Hold CTRL (or CMD) to select multiple files" title="Hold CTRL (or CMD) to select multiple files" multiple/>
+						<input id="fileselector3" class="hidden" onchange="session.changePublishFile(this,event);" type="file" accept="video/*,audio/*" alt="Hold CTRL (or CMD) to select multiple files" title="Hold CTRL (or CMD) to select multiple files" multiple/>
                     </div>
 				
                     <div id="blindAllGuests" title="Blind all guests in room (toggle)" alt="Blind all guests in room (toggle)" aria-label="Blind all guests in room" onmousedown="event.preventDefault(); event.stopPropagation();"  onclick="blindAllGuests(this, event)"  tabindex="2" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="hidden float" style="cursor: pointer;" >
@@ -173,7 +176,7 @@
                         <i id="queuetoggle" class="toggleSize las la-stream"></i>
                         <div id="queueNotification"></div>
                     </div>
-                    <div id="sharefilebutton" title="Transfer any file to the group" alt="Transfer any file to the group" aria-label="Select file to transfer" onmousedown="event.preventDefault(); event.stopPropagation();"  onclick="toggleFileshare()"  tabindex="2" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="float hidden" style="cursor: pointer;display:none!important;" >
+                    <div id="sharefilebutton" title="Transfer any file to the group" alt="Transfer any file to the group" aria-label="Select file to transfer" onmousedown="event.preventDefault(); event.stopPropagation();"  onclick="toggleFileshare()"  tabindex="2" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);"  class="float hidden" style="cursor: pointer;" >
                         <i id="filesharetoggle" class="toggleSize las la-file-upload"></i> 
                         <div id="transferNotification"></div>
                     </div>
@@ -297,7 +300,7 @@
 			</span>
 		</span>
 		<div id="mainmenu" class="row" style="opacity: 0;">
-			<div id="container-1" title="Add Group Chat to OBS"  alt="Add Group Chat to OBS" tabindex="1" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" class="column columnfade pointer rounded card" style=" overflow-y: auto;">
+			<div id="container-1" title="Add Group Chat to OBS"  alt="Add Group Chat to OBS" tabindex="1" role="button" aria-pressed="false" onkeyup="enterPressedClick(event,this);" class="column columnfade pointer card" style=" overflow-y: auto;">
 				
 					<h2>
 						<span data-translate="add-group-chat">Create a Room</span>
@@ -420,7 +423,7 @@
 						</div>
 					</div>
 			</div>
-			<div id="container-3"  title="Add your Camera to OBS" onkeyup="enterPressedClick(event,this);"  alt="Add your Camera to OBS" tabindex="1" role="button" aria-pressed="false" class="column columnfade pointer rounded card" onclick="previewWebcam()" style=" overflow-y: auto;">
+			<div id="container-3"  title="Add your Camera to OBS" onkeyup="enterPressedClick(event,this);"  alt="Add your Camera to OBS" tabindex="1" role="button" aria-pressed="false" class="column columnfade pointer card" onclick="previewWebcam()" style=" overflow-y: auto;">
 				<h2 id="add_camera">
 					<span data-translate="add-your-camera">Add your Camera to OBS</span>
 				</h2>
@@ -549,15 +552,16 @@
 						</div>
 					</div>
 					<br style="line-height: 0;" />
-					<div id="effectsDiv" aria-hidden="true">
+					<div id="effectsDiv">
 						<div class="title">
-							<i class="las la-robot"></i><span data-translate="select-digital-effect"> Digital Video Effects </span>
+							<i class="las la-robot"></i>
+							<span data-translate="select-digital-effect"> Digital Video Effects </span>
 						</div>
-						<select id="effectSelector" alt="Digital video effect options"  onchange="effectsDynamicallyUpdate(event, this);">
+						<select id="effectSelector" alt="Digital video effect options" onchange="effectsDynamicallyUpdate(event, this);">
 							<option value="0" data-translate="no-effects-applied">No effects applied</option>
 							<option value="3" data-translate="blurred-background">Blurred background</option>
 							<option value="13" class="hidden" disabled data-translate="blurred-background-2">Blurred background 2 🧪</option>
-							<option value="4" data-translate="digital-greenscreen">Digital greenscreen</option>	
+							<option value="4" data-translate="digital-greenscreen">Digital greenscreen</option>    
 							<option value="5" data-translate="virtual-background">Virtual background</option>
 							<option value="6" data-translate="face-mesh" title="experimental">Face mesh (slow load) 👨‍🔬</option>
 							<option value="7" data-translate="digital-zoom">Digital zoom</option>
@@ -573,17 +577,30 @@
 							<i class="las la-info-circle"></i>
 						</span>
 						
-						<div id="selectImageTFLITE" style="display:none;margin-top:10px;">
-							
-						</div>
-						<div id="selectImageOverlay" style="display:none;margin-top:10px;">
-							
-						</div>
+						<div id="selectImageContent" style="display:none;margin-top:10px;"></div>
+						<div id="selectImageOverlay" style="display:none;margin-top:10px;"></div>
+						
 						<div id="selectEffectAmount" style="display:none;margin-top:10px;">
 							<label for="selectEffectAmountInput" style="width: 113px;display: inline-block;">Effect Amount</label>
-							<input id="selectEffectAmountInput" style="display: inline-block;width: 350px; max-width: 60%;margin:6px 0;" name="selectEffectAmountInput" title="Adjust the amount of effect applied" type="range" oninput="changeEffectAmount(event, this)" onchange="changeEffectAmount(event, this)" min="0" step="1" max="20">
+							<input id="selectEffectAmountInput" style="display: inline-block;width: 350px; max-width: 60%;margin:6px 0;" 
+								   name="selectEffectAmountInput" title="Adjust the amount of effect applied" type="range" 
+								   oninput="changeEffectAmount(event, this)" onchange="changeEffectAmount(event, this)" 
+								   min="0" step="1" max="20">
 						</div>
-						
+						<div id="zoomPositionControls" style="display:none;margin-top:10px;">
+							<div style="margin-bottom: 10px;">
+								<label for="zoomPositionX1" style="width: 113px;display: inline-block;">Horizontal Position:</label>
+								<input id="zoomPositionX1" style="display: inline-block;width: 350px; max-width: 60%;margin:6px 0;" 
+									   type="range" oninput="changeZoomPosition(event, this)" onchange="changeZoomPosition(event, this)" 
+									   min="0" max="1" step="0.01" value="0.5">
+							</div>
+							<div>
+								<label for="zoomPositionY1" style="width: 113px;display: inline-block;">Vertical Position:</label>
+								<input id="zoomPositionY1" style="display: inline-block;width: 350px; max-width: 60%;margin:6px 0;" 
+									   type="range" oninput="changeZoomPosition(event, this)" onchange="changeZoomPosition(event, this)" 
+									   min="0" max="1" step="0.01" value="0.5">
+							</div>
+						</div>
 					</div>
 					<br style="line-height: 0;" />
 					<div id="addPasswordBasic">
@@ -620,7 +637,7 @@
 					</div>
 				</div>
 			</div>
-			<div id="container-3a"  title="Add your Microphone to OBS" onkeyup="enterPressedClick(event,this);"  alt="Add your Microphone to OBS" tabindex="1" role="button" aria-pressed="false" class="microphoneBackground column columnfade pointer rounded card hidden" onclick="previewWebcam(true)" style=" overflow-y: auto;">
+			<div id="container-3a"  title="Add your Microphone to OBS" onkeyup="enterPressedClick(event,this);"  alt="Add your Microphone to OBS" tabindex="1" role="button" aria-pressed="false" class="microphoneBackground column columnfade pointer card hidden" onclick="previewWebcam(true)" style=" overflow-y: auto;">
 				<h2 id="add_microphone">
 					<span data-translate="add-your-microphone">Add your Microphone to OBS</span>
 				</h2>
@@ -632,7 +649,7 @@
 					</div>
 				</div>
 			</div>
-			<div id="container-2" title="Remote Screenshare into OBS" onkeyup="enterPressedClick(event,this);"  alt="Remote Screenshare into OBS"  tabindex="1" role="button" aria-pressed="false" class="column columnfade pointer rounded card screenshareIcon" style=" overflow-y: auto;">
+			<div id="container-2" title="Remote Screenshare into OBS" onkeyup="enterPressedClick(event,this);"  alt="Remote Screenshare into OBS"  tabindex="1" role="button" aria-pressed="false" class="column columnfade pointer card screenshareIcon" style=" overflow-y: auto;">
 				<h2 id="add_screen">
 					<span data-translate="remote-screenshare-obs">Remote Screenshare into OBS</span>
 				</h2>
@@ -731,7 +748,7 @@
 					</div>
 				</div>
 			</div>
-			<div id="container-4" tabindex="1" alt="Create Reusable Invite" onkeyup="enterPressedClick(event,this);" onclick="loadQR();" title="Create Reusable Invite" role="button" aria-pressed="false" class="column columnfade pointer rounded card" style=" overflow-y: auto;">
+			<div id="container-4" tabindex="1" alt="Create Reusable Invite" onkeyup="enterPressedClick(event,this);" onclick="loadQR();" title="Create Reusable Invite" role="button" aria-pressed="false" class="column columnfade pointer card" style=" overflow-y: auto;">
 				<h2>
 					<span data-translate="create-reusable-invite">Create Reusable Invite</span>
 				</h2>
@@ -860,13 +877,14 @@
 			
 			<div id="dropButton" onclick="dropDownButtonAction()" title="More Options" aria-hidden="true"><i class="las la-chevron-down" ></i></div>
 			
-			<div id="container-5" class="column columnfade pointer rounded card hidden" style=" overflow-y: auto;">
+			<div id="container-5" class="column columnfade pointer card hidden" style=" overflow-y: auto;">
 				<h2><span data-translate="share-local-video-file">Stream Media File</span></h2>
 				<div class="container-inner">
 					
 					<br /><br />
 					<span data-translate="select-the-video-files-to-share">SELECT THE VIDEO FILES TO SHARE</span><br /><br />
 					<input id="fileselector" onchange="session.publishFile(this,event);" type="file" accept="video/*,audio/*" alt="Hold CTRL (or CMD) to select multiple files" title="Hold CTRL (or CMD) to select multiple files" multiple/>
+					<label for="fileselector">Choose video files</label>
 					<br /><br />
 					<div class='warning message-card'>
 						<h1>Warning</h1>
@@ -882,7 +900,8 @@
 					</div>
 					<br /><br />
 					To host a file for download, rather than for streaming, try the following instead: 
-					<input id="fileselector2" onchange="session.hostFile(this,event);" type="file" title="Transfer any file"/>
+					<input id="fileselector2" onchange="session.hostFile(this,event);" multiple type="file" title="Transfer any file"/>
+					<label for="fileselector2">Choose file to transfer</label>
 				</div>
 				
 				<div class="outer close">
@@ -894,7 +913,7 @@
 				</div>
 			</div>
 			
-			<div id="container-6" class="column columnfade pointer rounded card hidden" style=" overflow-y: auto;">
+			<div id="container-6" class="column columnfade pointer card hidden" style=" overflow-y: auto;">
 				<h2><span data-translate="share-website-iframe">Share Website</span></h2>
 				<i style="margin-top:30px;font-size:560%;overflow:hidden;" class="largeDarkIcon las la-broadcast-tower"></i>
 				<div class="container-inner">
@@ -924,7 +943,7 @@
 				</div>
 			</div>
 			
-			<div id="container-18" class="column columnfade pointer rounded card hidden" style="display:none!important; opacity:0; width:0; height:0; overflow-y: auto;">
+			<div id="container-18" class="column columnfade pointer card hidden" style="display:none!important; opacity:0; width:0; height:0; overflow-y: auto;">
 				<h2><span data-translate="whip-in">Join Room via WHIP</span></h2>
 				<i style="margin-top:30px;font-size:560%;overflow:hidden;" class="largeDarkIcon las la-broadcast-tower"></i>
 				<div class="container-inner">
@@ -952,63 +971,68 @@
 				</div>
 			</div>
 			
-			<div id="container-7" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = './speedtest.html';">
+			<div id="container-7" class="column columnfade pointer card hidden" style="overflow: hidden;" onclick="window.location = './speedtest.html';">
 				<h2><span data-translate="run-a-speed-test">Run a Speed Test</span></h2>
 				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-tachometer-alt"></i>
 			</div>
 			
-			<div id="container-8" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = './mixer.html';">
+			<div id="container-8" class="column columnfade pointer card hidden" style="overflow: hidden;" onclick="window.location = './mixer.html';">
 				<h2><span data-translate="try-the-mixer-out">Custom Mixed Layouts</span></h2>
 				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-blender"></i>
 			</div>
 			
-			<div id="container-14" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = 'https://versus.cam';">
+			<div id="container-14" class="column columnfade pointer card hidden" style="overflow: hidden;" onclick="window.location = 'https://versus.cam';">
 				<h2><span data-translate="try-out-versus-cam">Multi-Stream Monitor</span></h2>
 				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-gamepad"></i>
 			</div>
 			
-			<div id="container-15" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = './comms.html';">
+			<div id="container-15" class="column columnfade pointer card hidden" style="overflow: hidden;" onclick="window.location = './comms.html';">
 				<h2><span data-translate="voice-comms-app">Group Voice Comms</span></h2>
 				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-comments"></i>
 			</div>
 			
-			<div id="container-9" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = 'https://guides.vdo.ninja';">
+			<div id="container-20" title="Draw on a digital whiteboard and publish the output via VDO.Ninja, WHIP, or just have fun" class="column columnfade pointer card hidden" style="overflow: hidden;" onclick="window.location = './whiteboard.html';">
+				<h2><span data-translate="try-the-whiteboard">Whiteboard</span></h2>
+				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-chalkboard"></i>
+			</div>
+			
+			<div id="container-9" class="column columnfade pointer card hidden" style="overflow: hidden;" onclick="window.location = 'https://guides.vdo.ninja';">
 				<h2><span data-translate="read-the-guides">Basic Usage Guides</span></h2>
 				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-book-open"></i>
 			</div>
 			
-			<div id="container-13" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = 'https://linkgen.vdo.ninja';">
+			<div id="container-13" class="column columnfade pointer card hidden" style="overflow: hidden;" onclick="window.location = 'https://linkgen.vdo.ninja';">
 				<h2><span data-translate="wizard-link-generator">Wizard Link Generator</span></h2>
 				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-hat-wizard"></i>
 			</div>
 			
-			<div id="container-10" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = 'https://docs.vdo.ninja';">
+			<div id="container-10" class="column columnfade pointer card hidden" style="overflow: hidden;" onclick="window.location = 'https://docs.vdo.ninja';">
 				<h2><span data-translate="get-full-documentation">Full Documentation</span></h2>
 				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-info"></i>
 			</div>
-			<div id="container-11" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = 'https://docs.vdo.ninja/steves-helper-apps/native-mobile-app-versions';">
+			<div id="container-11" class="column columnfade pointer card hidden" style="overflow: hidden;" onclick="window.location = 'https://docs.vdo.ninja/steves-helper-apps/native-mobile-app-versions';">
 				<h2><span data-translate="get-the-native-app">Native Mobile Apps</span></h2>
 				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-mobile"></i>
 				<div class="container-inner">
 					Loading ...
 				</div>
 			</div>
-			<div id="container-19" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = 'https://github.vdo.ninja';">
+			<div id="container-19" class="column columnfade pointer card hidden" style="overflow: hidden;" onclick="window.location = 'https://github.vdo.ninja';">
 				<h2><span data-translate="get-the-source-code">Source Code</span></h2>
 				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-code-branch"></i>
 			</div>
 			
-			<div id="container-12" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = 'https://docs.vdo.ninja/getting-started/sponsor';">
+			<div id="container-12" class="column columnfade pointer card hidden" style="overflow: hidden;" onclick="window.location = 'https://docs.vdo.ninja/getting-started/sponsor';">
 				<h2><span data-translate="show-your-support">Show Your Support</span></h2>
 				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-heartbeat"></i>
 			</div>
 			
-			<div id="container-17" class="column columnfade pointer rounded card hidden" style="overflow: hidden;" onclick="window.location = './whip';">
+			<div id="container-17" class="column columnfade pointer card hidden" style="overflow: hidden;" onclick="window.location = './whip';">
 				<h2><span data-translate="publish-via-whip">Publish via WHIP</span></h2>
 				<i style="margin-top:30px;font-size:600%;overflow:hidden;" class="largeDarkIcon las la-broadcast-tower"></i>
 			</div>
 			
-			<div id="container-16" class="column columnfade pointer rounded card hidden" style=" overflow-y: auto;">
+			<div id="container-16" class="column columnfade pointer card hidden" style=" overflow-y: auto;">
 				<h2><span data-translate="share-whepsrc">Share via WHEP</span></h2>
 				<i style="margin-top:30px;font-size:560%;overflow:hidden;" class="largeDarkIcon las la-broadcast-tower"></i>
 				<div class="container-inner">
@@ -1995,7 +2019,7 @@
                     <div class="title">
                         <i class="las la-video"></i><span data-translate="video-source"> Video Source: </span>
                     </div>
-					<span style="display:inline-block;">
+					<span>
 						<select id="videoSource3" ></select>			
 						<span id="refreshVideoButton" title="Activate or Reload this video device.">
 							<i class="las la-sync-alt"></i>
@@ -2071,39 +2095,72 @@
 						</div>
 					</div>
 				
-				<span id="effectsDiv3" style="display: none; user-select: none;">
-					<div class="title">
-						<i class="las la-robot"></i>
+				<div id="effectsDiv3" class="effects-controls" style="display: none;">
+					<div class="title" role="heading" aria-level="2">
+						<i class="las la-robot" aria-hidden="true"></i>
 						<span data-translate="select-digital-effect"> Digital Video Effects: </span>
 					</div>
-					<select id="effectSelector3" onchange="effectsDynamicallyUpdate(event, this);">
-						<option value="0" data-translate="no-effects-applied">No effects applied</option>
-						<option value="3" data-translate="blurred-background">Blurred background</option>
-						<option value="13" class="hidden" disabled data-translate="blurred-background-2">Blurred background 2 🧪</option>
-						<option value="4" data-translate="digital-greenscreen">Digital greenscreen</option>	
-						<option value="5" data-translate="virtual-background">Virtual background</option>
-						<option value="6" data-translate="face-mesh" title="experimental">Face mesh (slow load) 👨‍🔬</option>
-						<option value="7" data-translate="digital-zoom">Digital zoom</option>
-						<option value="overlay" data-translate="overlay-image">Overlay image</option>
-						<option value="anon" data-translate="anonymous-mask" title="experimental">Anonymous mask 👨‍🔬</option>
-						<option value="dog" data-translate="dog-face" title="experimental">Dog ears and nose 👨‍🔬</option>
-						<option value="1" disabled title='Face Detection API not detected; you may be able to enable it here: chrome://flags/#enable-experimental-web-platform-features' class='facetracker' data-translate="face-tracker">Face tracker</option>
-					</select>
-					<span data-warnSimdNotice="true" style='display:none; font-size: 140%; margin-left:10px; vertical-align: middle; cursor:pointer' title="Improve performance and quality with this tip" onclick="smdInfo();">
-						<i class="las la-info-circle"></i>
-					</span>
-					<div id="selectImageTFLITE3" style="display:none;margin-top:10px;">
+					<div class="effect-selector-group">
+						<label for="effectSelector3">Select Effect:</label>
+						<select id="effectSelector3" onchange="effectsDynamicallyUpdate(event, this);">
+							<option value="0" data-translate="no-effects-applied">No effects applied</option>
+							<option value="3" data-translate="blurred-background">Blurred background</option>
+							<option value="13" class="hidden" disabled data-translate="blurred-background-2">Blurred background 2 🧪</option>
+							<option value="4" data-translate="digital-greenscreen">Digital greenscreen</option>    
+							<option value="5" data-translate="virtual-background">Virtual background</option>
+							<option value="6" data-translate="face-mesh" title="experimental">Face mesh (slow load) 👨‍🔬</option>
+							<option value="7" data-translate="digital-zoom">Digital zoom</option>
+							<option value="overlay" data-translate="overlay-image">Overlay image</option>
+							<option value="14" data-translate="remove-green">Remove Chroma Green</option>
+							<option value="anon" data-translate="anonymous-mask" title="experimental">Anonymous mask 👨‍🔬</option>
+							<option value="dog" data-translate="dog-face" title="experimental">Dog ears and nose 👨‍🔬</option>
+							<option value="1" disabled title='Face Detection API not detected' class='facetracker' data-translate="face-tracker">Face tracker</option>
+						</select>
+					</div>
+					<div id="selectEffectAmount3" style="display:none;" role="group" aria-label="Effect Amount Control">
+						<label for="selectEffectAmountInput3" id="effectAmountLabel">Effect amount:</label>
+						<input id="selectEffectAmountInput3" 
+							   type="range"
+							   aria-labelledby="effectAmountLabel"
+							   oninput="changeEffectAmount(event, this)" 
+							   onchange="changeEffectAmount(event, this)" 
+							   min="0" 
+							   step="1" 
+							   max="20"
+							   class="effect-slider">
+					</div>
+					<div id="zoomPositionControls3" style="display:none;" role="group" aria-label="Digital Zoom Controls">
+						<div class="zoom-control-group">
+							<label for="zoomPositionX" id="zoomPosXLabel">Horizontal Position:</label>
+							<input id="zoomPositionX" 
+								   type="range" 
+								   aria-labelledby="zoomPosXLabel"
+								   oninput="changeZoomPosition(event, this)" 
+								   onchange="changeZoomPosition(event, this)" 
+								   min="0" 
+								   max="1" 
+								   step="0.01" 
+								   value="0.5"
+								   class="zoom-slider">
+							<output for="zoomPositionX" class="zoom-value"></output>
+						</div>
 						
+						<div class="zoom-control-group">
+							<label for="zoomPositionY" id="zoomPosYLabel">Vertical Position:</label>
+							<input id="zoomPositionY" 
+								   type="range" 
+								   aria-labelledby="zoomPosYLabel"
+								   oninput="changeZoomPosition(event, this)" 
+								   onchange="changeZoomPosition(event, this)" 
+								   min="0" 
+								   max="1" 
+								   step="0.01" 
+								   value="0.5"
+								   class="zoom-slider">
+							<output for="zoomPositionY" class="zoom-value"></output>
+						</div>
 					</div>
-					<div id="selectImageOverlay3" style="display:none;margin-top:10px;">
-						
-					</div>
-					<div id="selectEffectAmount3" style="display:none;margin-top:10px;">
-						<label for="selectEffectAmountInput3" style="width: 113px;display: inline-block;">Effect amount:</label>
-						<input id="selectEffectAmountInput3" style="display: inline-block;width: 350px; max-width: 60%;margin:6px 0;" name="selectEffectAmountInput3" title="Adjust the amount of effect applied" type="range" oninput="changeEffectAmount(event, this)" onchange="changeEffectAmount(event, this)" min="0" step="1" max="20">
-					</div>
-					
-				</span>
+				</div>
 				<button id="shareScreenGear" style="width: 135px; padding:20px;text-align:center;" onclick="grabScreen()"><b>Share Screen</b><br /><i style="padding:5px; font-size:300%;" class="las la-desktop"></i></button>
 				
 				<button id="pIpStartButton" style="width: 135px; background-color:#EFEFEF;padding:20px;text-align:center;display:none;"><b>Preview PiP VIdeo</b><br /><i style="padding:5px; font-size:300%;color:black;" class="las la-compress-arrows-alt"></i></button>
@@ -2674,10 +2731,10 @@
 		<div id="raisedHandTemplate" class="hidden video-mute-state raisedHand">
 			<i class="las la-hand-paper"></i>
 		</div>
-		<div id="selectImageTFLITE_contents" style="display:flex;overflow-x:auto;" class="hidden">
+		<div id="selectImage_contents" style="display:flex;overflow-x:auto;" class="hidden">
 			<label style="min-width:100px;display:inline-block;margin:0px 1px; text-align:center; cursor:pointer;">
 				<i class="las la-hdd" style="font-size: 3em;"></i><br /><span data-translate="select-local-image">Select Local Image</span>
-				<input type="file"  accept="image/*" onchange="changeTFLiteImage(event, this)" style="position: fixed; top: -100em; margin-left:10px; border:1px solid #555;"> 
+				<input type="file"  accept="image/*" onchange="changeEffectsImage(event, this)" style="position: fixed; top: -100em; margin-left:10px; border:1px solid #555;"> 
 			</label>
 		</div>
 		<div id="selectImageOverlay_contents" style="display:flex;overflow-x:auto;" class="hidden">
@@ -2685,7 +2742,7 @@
 				<i class="las la-hdd" style="font-size: 3em;"></i><br /><span data-translate="select-local-image">Select Local Image</span>
 				<input type="file"  accept="image/*" onchange="changeOverlayImage(event, this)" style="position: fixed; top: -100em; margin-left:10px; border:1px solid #555;"> 
 			</label>
-			<label style="min-width:100px;display:inline-block;margin:0px 1px; text-align:center; cursor:pointer;" onclick="if (session.foregroundImg){session.foregroundImg.classList.remove('selectedTFImage');session.foregroundImg=null;}">
+			<label style="min-width:100px;display:inline-block;margin:0px 1px; text-align:center; cursor:pointer;" onclick="if (session.foregroundImg){session.foregroundImg.classList.remove('selectedContentEffectsImage');session.foregroundImg=null;}">
 				<i class="las la-minus-circle" style="font-size: 3em;"></i><br /><span data-translate="clear-local-image">Clear Image</span>
 			</label>
 		</div>
@@ -2749,6 +2806,9 @@
 		<div id="meshcastMenu" class="hidden">
 			Meshcast publishing region: <select name="edgelist" id="edgelist" onchange="selectMeshcast(this);" title="Select a location that is closest to both you and your audience."></select>
 		</div>
+		<div aria-hidden="true" style="height: 0; width: 0; position: absolute; overflow: hidden; margin: -1px; clip: rect(0 0 0 0);">
+			<a href="/rawdoc.md" type="text/markdown" rel="documentation">Full and User Documentation</a>
+		</div>
 		<script>
 		
 			if (window.location.hostname.indexOf("www.obs.ninja") == 0) {
@@ -2776,7 +2836,7 @@
 			// if (!window.location.search){document.body.innerHTML = "";} // uncomment this line, if you wish to try it.
 			
 			var session = WebRTC.Media; // session is a required global variable if configuring manually. Run before loading main.js but after webrtc.js.
-			session.version = "26.3";
+			session.version = "26.5";
 			session.streamID = session.generateStreamID(); // randomly generates a streamID for this session. You can set your own programmatically if needed
 			
 			session.defaultPassword = "someEncryptionKey123"; // Change this password if self-deploying for added security/privacy
@@ -2899,7 +2959,8 @@
 			// if ("42" != prompt("enter the password")){document.body.innerHTML = "";window.location.href = "";} // if you want a low-effort password for the site
 			
 		</script>
-		<script type="text/javascript" crossorigin="anonymous" id="lib-js" src="./lib.js?ver=1290"></script>
-		<script type="text/javascript" crossorigin="anonymous" id="main-js" src="./main.js?ver=949"></script>
+		<script type="text/javascript" crossorigin="anonymous" id="lib-js" src="./lib.js?ver=1292"></script>
+		<script type="text/javascript" crossorigin="anonymous" id="main-js" src="./main.js?ver=951"></script>
+		<!-- <script type="text/javascript" crossorigin="anonymous"  src="./trace.js?ver=1"></script>!-->
 	</body>
 </html>

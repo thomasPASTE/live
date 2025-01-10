@@ -126,6 +126,9 @@
 				max-height: 40vh;
 			}
 		}
+		#video {
+			background-color: #000;
+		}
     </style>
 </head>
 <body>
@@ -193,70 +196,111 @@
 			console.log("Auto-gain disabled");
 		}
 
-        async function init() {
-            try {
-                await getDevices();
-                await startMedia();
-            } catch (error) {
-                console.error('Error initializing media:', error);
-            }
-        }
+		async function init() {
+			try {
+				await getDevices();
+				await startMedia().catch(e => {
+					console.warn('Initial media start failed:', e);
+					// Still allow device selection even if initial device is busy
+					recordButton.setAttribute("disabled", "true");
+					videoElement.srcObject = null;
+					videoElement.poster = "camera-off.png"; // Optional: show offline state
+				});
+			} catch (error) {
+				console.error('Error initializing:', error);
+			}
+		}
 
-        async function getDevices() {
-            try {
-                const devices = await navigator.mediaDevices.enumerateDevices();
-                const videoDevices = devices.filter(device => device.kind === 'videoinput');
-                const audioDevices = devices.filter(device => device.kind === 'audioinput');
+		async function getDevices() {
+			try {
+				// Request initial permissions - required for Firefox
+				await navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+					.then(stream => stream.getTracks().forEach(track => track.stop()))
+					.catch(e => console.warn('Permission denied:', e));
+					
+				const devices = await navigator.mediaDevices.enumerateDevices();
+				const videoDevices = devices.filter(device => device.kind === 'videoinput');
+				const audioDevices = devices.filter(device => device.kind === 'audioinput');
 
-                videoSelect.innerHTML = videoDevices.map(device => `<option value="${device.deviceId}">${device.label}</option>`).join('');
-                audioSelect.innerHTML = audioDevices.map(device => `<option value="${device.deviceId}">${device.label}</option>`).join('');
-            } catch (error) {
-                console.error('Error getting devices:', error);
-            }
-        }
+				// Only update selects if we have device labels (permissions granted)
+				if (devices.some(device => device.label)) {
+					videoSelect.innerHTML = videoDevices.map(device => 
+						`<option value="${device.deviceId}">${device.label || `Video Device ${videoDevices.indexOf(device) + 1}`}</option>`
+					).join('');
+					audioSelect.innerHTML = audioDevices.map(device => 
+						`<option value="${device.deviceId}">${device.label || `Audio Device ${audioDevices.indexOf(device) + 1}`}</option>`
+					).join('');
+				}
+			} catch (error) {
+				console.error('Error getting devices:', error);
+			}
+		}
 
         async function startMedia() {
-            try {
-                if (mediaStream) {
-                    mediaStream.getTracks().forEach(track => track.stop());
-                }
+			try {
+				if (mediaStream) {
+					mediaStream.getTracks().forEach(track => track.stop());
+				}
 
-                const videoSource = videoSelect.value;
-                const audioSource = audioSelect.value;
+				const videoSource = videoSelect.value;
+				const audioSource = audioSelect.value;
 
-                mediaStream = await navigator.mediaDevices.getUserMedia({
-                    video: { deviceId: videoSource ? { exact: videoSource } : undefined },
-                    audio: {
-                        deviceId: audioSource ? { exact: audioSource } : undefined,
-                        echoCancellation: false,
-                        noiseSuppression: denoise,
-                        autoGainControl: autogain
-                    }
-                });
-                videoElement.srcObject = mediaStream;
+				// Try video and audio separately to handle partial failures
+				try {
+					mediaStream = await navigator.mediaDevices.getUserMedia({
+						video: { deviceId: videoSource ? { exact: videoSource } : undefined },
+						audio: {
+							deviceId: audioSource ? { exact: audioSource } : undefined,
+							echoCancellation: false,
+							noiseSuppression: denoise,
+							autoGainControl: autogain
+						}
+					});
+				} catch (e) {
+					// If full request fails, try audio-only
+					console.warn('Full media request failed, trying audio-only:', e);
+					mediaStream = await navigator.mediaDevices.getUserMedia({
+						video: false,
+						audio: {
+							deviceId: audioSource ? { exact: audioSource } : undefined,
+							echoCancellation: false,
+							noiseSuppression: denoise,
+							autoGainControl: autogain
+						}
+					});
+				}
 
-                if (audioContext) {
-                    audioContext.close();
-                }
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                await audioContext.audioWorklet.addModule('testrecord-processor.js');
+				if (mediaStream.getVideoTracks().length > 0) {
+					videoElement.srcObject = mediaStream;
+					recordButton.removeAttribute("disabled");
+				} else {
+					videoElement.srcObject = null;
+					videoElement.poster = "camera-off.png"; // Optional: show offline state
+					recordButton.setAttribute("disabled", "true");
+				}
 
-                const audioTracks = mediaStream.getAudioTracks();
-                if (audioTracks.length > 0) {
-                    sourceNode = audioContext.createMediaStreamSource(mediaStream);
-                    meter = new AudioWorkletNode(audioContext, 'meter');
-                    meter.port.onmessage = (event) => {
-                        const volume = event.data;
-                        meterFill.style.width = `${Math.min(volume * 100, 100)}%`;
-                    };
-                    sourceNode.connect(meter).connect(audioContext.destination);
-                }
+				if (audioContext) {
+					audioContext.close();
+				}
+				audioContext = new (window.AudioContext || window.webkitAudioContext)();
+				await audioContext.audioWorklet.addModule('testrecord-processor.js');
 
-                recordButton.removeAttribute("disabled");
-            } catch (error) {
-                console.error('Error starting media:', error);
-            }
-        }
+				const audioTracks = mediaStream.getAudioTracks();
+				if (audioTracks.length > 0) {
+					sourceNode = audioContext.createMediaStreamSource(mediaStream);
+					meter = new AudioWorkletNode(audioContext, 'meter');
+					meter.port.onmessage = (event) => {
+						const volume = event.data;
+						meterFill.style.width = `${Math.min(volume * 100, 100)}%`;
+					};
+					sourceNode.connect(meter).connect(audioContext.destination);
+				}
+
+			} catch (error) {
+				console.error('Error starting media:', error);
+				throw error; // Re-throw to allow handling by caller
+			}
+		}
 
         recordButton.addEventListener('click', async () => {
             try {

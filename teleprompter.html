@@ -665,7 +665,10 @@ async function loadPage(){
 	
 	updateURL("link="+ encodeURIComponent(iframeURL), true);
 	
-	iframe.allow = "encrypted-media;sync-xhr;usb;web-share;cross-origin-isolated;accelerometer;midi;geolocation;autoplay;camera;microphone;fullscreen;picture-in-picture;display-capture;";
+	iframe.allow = "encrypted-media;sync-xhr;usb;web-share;cross-origin-isolated;accelerometer;midi;geolocation;autoplay;camera;microphone;fullscreen;picture-in-picture;display-capture;screen-wake-lock;";
+	iframe.setAttribute("allowtransparency", "true");
+	iframe.setAttribute("crossorigin", "anonymous");
+	iframe.setAttribute("credentialless", "true");
 	iframe.src = iframeURL;
 
 	rotatePage();
