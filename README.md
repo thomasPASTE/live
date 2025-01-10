@@ -1,5 +1,5 @@
 
-<img src="https://github.com/user-attachments/assets/ef585f12-1541-4d97-afba-2c166391b29e" width="200" />
+<img src="https://github.com/user-attachments/assets/8134f167-2ea5-42e8-9450-b7aed322b6b0" width="300" />
 
 [![GitHub Repo stars](https://img.shields.io/github/stars/steveseguin/vdoninja?style=social)](https://github.com/steveseguin/vdoninja)
 [![GitHub forks](https://img.shields.io/github/forks/steveseguin/vdoninja?style=social)](https://github.com/steveseguin/vdoninja/fork)
