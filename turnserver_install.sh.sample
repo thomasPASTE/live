@@ -8,6 +8,12 @@ fi
 configure_ssl() {
     local DOMAIN=$1
     
+    # Generate DH params first
+    if [ ! -f /etc/turnserver/dhparam.pem ]; then
+        mkdir -p /etc/turnserver
+        openssl dhparam -out /etc/turnserver/dhparam.pem 2066
+    fi
+    
     # Check if port 80 is in use
     if netstat -tuln | grep ':80 '; then
         echo "Warning: Port 80 is in use. Stopping potentially conflicting services..."
@@ -46,10 +52,23 @@ configure_ssl() {
     
     # Update turnserver.conf with SSL settings
     cat >> /etc/turnserver.conf << EOL
+# SSL Configuration
 cert=/etc/letsencrypt/live/${DOMAIN}/fullchain.pem
 pkey=/etc/letsencrypt/live/${DOMAIN}/privkey.pem
-tls-listening-port=443
+dh-file=/etc/turnserver/dhparam.pem
+
+# Cipher Suite
+cipher-list="ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384"
 EOL
+    
+    # Set proper permissions
+    chown -R turnserver:turnserver /etc/turnserver
+    chmod 700 /etc/turnserver
+    chmod 600 /etc/turnserver/dhparam.pem
+    
+    # Also ensure proper permissions for SSL certs
+    chown -R turnserver:turnserver /etc/letsencrypt/live/${DOMAIN}/
+    chmod -R 700 /etc/letsencrypt/live/${DOMAIN}/
     
     # Create renewal hook
     mkdir -p /etc/letsencrypt/renewal-hooks/deploy
@@ -70,7 +89,7 @@ install_coturn() {
     
     # Install required packages
     apt-get update
-    apt-get install coturn curl dnsutils -y
+    apt-get install coturn curl dnsutils openssl -y
     
     # Configure system limits
     echo "fs.file-max = 65535" >> /etc/sysctl.conf
@@ -82,20 +101,25 @@ install_coturn() {
     
     # Generate base turnserver configuration
     cat > /etc/turnserver.conf << EOL
+# Listening Ports
 listening-port=3478
-alt-listening-port=0
+alt-listening-port=3479
+tls-listening-port=443
+
+# Authentication
 fingerprint
 lt-cred-mech
-# STUN/TURN configuration
-stun-port=3478
-min-port=49152
-max-port=65535
 user=${USERNAME}:${PASSWORD}
 stale-nonce=600
+
+# Server Configuration
 realm=${DOMAIN}
 server-name=${DOMAIN}
+min-port=49152
+max-port=65535
+
+# Security
 no-multicast-peers
-dh2066
 no-stdout-log
 EOL
     
@@ -152,7 +176,7 @@ echo "Installation complete!"
 echo "----------------------------------------"
 echo "Domain: $DOMAIN"
 echo "Username: $USERNAME"
-echo "STUN/TURN ports: 3478 (default)"
+echo "STUN/TURN ports: 3478 (default), 3479 (alt)"
 if [ "${ENABLE_SSL,,}" = "y" ]; then
     echo "TLS enabled on port 443"
     echo "SSL certificates will automatically renew via certbot"
