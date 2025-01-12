@@ -79,6 +79,34 @@ Required ports:
 - 443 TCP/UDP (TURNS, if enabled)
 - 49152:65535 TCP/UDP (Media relay ports)
 
+### Configuring Firewall
+
+The following can be used to configure your `ufw` firewall on Linux if needed. Adjust accordingly.
+
+```bash
+# SSH (add this first to avoid lockout)
+sudo ufw allow 22/tcp    # SSH access
+
+# Core TURN/STUN ports
+sudo ufw allow 3478/tcp  # Default TURN/STUN TCP
+sudo ufw allow 3478/udp  # Default TURN/STUN UDP
+
+# If using TLS/SSL
+sudo ufw allow 443/tcp   # TURN TLS
+sudo ufw allow 443/udp   # TURN TLS/DTLS
+
+# Media relay ports
+sudo ufw allow 49152:65535/tcp  # TCP relay ports
+sudo ufw allow 49152:65535/udp  # UDP relay ports
+
+# Optional if you want alt-port support
+sudo ufw allow 3479/tcp  # Alternative port (port+1)
+sudo ufw allow 3479/udp  # Alternative port (port+1)
+
+# Enable UFW if not already enabled
+sudo ufw enable
+```
+
 ## Advanced Usage
 
 ### Reloading SSL Certificates
