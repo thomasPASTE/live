@@ -146,6 +146,7 @@ EOL
 }
 
 # Swap setup
+echo "Increasing swap memory to 16GB"
 if [ -f /swapfile ]; then
     sudo swapoff -a
     sudo rm /swapfile
