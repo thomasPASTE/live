@@ -49,7 +49,6 @@ listening-port=3478        # Standard STUN/TURN port
 fingerprint               # Required for WebRTC
 lt-cred-mech             # Long-term credential mechanism
 user=username:password    # Authentication credentials
-stale-nonce=600          # Nonce timeout in seconds
 realm=turn.example.com   # Your server's domain
 server-name=turn.example.com
 no-multicast-peers       # Security measure
@@ -58,12 +57,10 @@ no-stdout-log           # Disable stdout logging
 
 ## SSL/TLS Support (Optional)
 
-The installer configures SSL/TLS support which:
+The installer can configure SSL/TLS support which:
 - Enables TURNS (TURN over TLS) on port 443
 - Automatically obtains and renews SSL certificates via certbot
-- Generates secure DH parameters for improved TLS security
 - Configures automatic certificate reload without server restart
-- Sets up proper file permissions for security
 
 ## Testing Your Server
 
@@ -95,6 +92,9 @@ sudo ufw allow 3478/udp  # Default TURN/STUN UDP
 # If using TLS/SSL
 sudo ufw allow 443/tcp   # TURN TLS
 sudo ufw allow 443/udp   # TURN TLS/DTLS
+
+# If using Certbot for SSL renewals
+sudo ufw allow 80/tcp   # HTTP
 
 # Media relay ports
 sudo ufw allow 49152:65535/tcp  # TCP relay ports
@@ -131,16 +131,9 @@ sudo systemctl status coturn
    - Manual fix: `sudo setcap cap_net_bind_service=+ep /usr/bin/turnserver`
 
 2. **SSL certificate errors (701)**
-   - Verify certificate permissions: `sudo chown -R turnserver:turnserver /etc/letsencrypt/live/your-domain/`
-   - Check DH parameters: `sudo ls -l /etc/turnserver/dhparam.pem`
-   - Ensure all SSL files are readable by turnserver user
-   - Verify cipher suite compatibility in config
-
-3. **TLS connection failures**
-   - Check firewall rules for both TCP and UDP on port 443
-   - Verify TLS certificate paths in configuration
-   - Ensure DH parameters are properly generated
-   - Check logs: `sudo journalctl -u coturn -n 50`
+   - Verify certificate permissions
+   - Check certificate paths in configuration
+   - Ensure certificates are readable by turnserver user
 
 ## Production Considerations
 
@@ -154,13 +147,11 @@ sudo systemctl status coturn
    - Watch for high CPU/memory usage
    - Track active connections
 
-2. **Security**
-   - Regularly rotate TURN credentials
-   - Monitor for unusual traffic patterns
-   - Keep coturn, OpenSSL, and certificates up to date
-   - Use strong cipher suites for TLS connections
-   - Maintain proper file permissions
-   
+3. **Security**
+   - Regularly update credentials
+   - Monitor for abuse
+   - Keep coturn and SSL certificates up to date
+
 ## Support
 
 For issues or questions:
