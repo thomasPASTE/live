@@ -81,6 +81,9 @@ systemctl --signal=SIGUSR2 kill coturn
 EOL
     chmod +x /etc/letsencrypt/renewal-hooks/deploy/coturn-reload
     
+    # Restart coturn to apply SSL configuration
+    systemctl restart coturn
+    
     return 0
 }
 
