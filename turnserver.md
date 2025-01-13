@@ -151,6 +151,120 @@ sudo systemctl status coturn
    - Regularly update credentials
    - Monitor for abuse
    - Keep coturn and SSL certificates up to date
+   
+
+## VDO.Ninja Configuration
+
+You have different ways to set and specify a TURN server in VDO.Ninja; see below.
+
+### URL Parameters
+
+#### TURN Server Configuration
+Use `&turn` to specify custom TURN servers or modify TURN behavior:
+
+```
+&turn=user;pwd;turnserveraddress
+```
+
+Examples:
+- Custom TURN: `&turn=steve;setupYourOwnPlease;turn:turn.vdo.ninja:443`
+- Disable TURN: `&turn=false` or `&turn=off`
+- Use Twilio: `&turn=twilio`
+- No STUN: `&turn=nostun`
+
+#### Force TURN Usage
+Use `&relay`, `&private`, or `&privacy` to force TURN relay usage:
+- Forces the use of TURN servers instead of direct connections
+- Hides IP addresses from peers
+- May increase latency
+- Useful for testing or privacy requirements
+
+### Manual Configuration
+
+#### Basic Configuration
+Add to index.html before loading main.js but after webrtc.js:
+
+```javascript
+var session = WebRTC.Media;
+session.version = "26.5";
+session.streamID = session.generateStreamID();
+
+session.defaultPassword = "someEncryptionKey123";
+session.stunServers = [{ 
+    urls: ["stun:stun.l.google.com:19302", "stun:stun.cloudflare.com:3478"]
+}];
+
+// Basic TURN Setup
+session.configuration = {
+    iceServers: session.stunServers,
+    sdpSemantics: session.sdpSemantics
+};
+
+var turn = {
+    username: "steve",
+    credential: "justtesting",
+    urls: ["turn:turn.obs.ninja:443"]
+};
+session.configuration.iceServers.push(turn);
+
+// Force TURN relay
+// session.configuration.iceTransportPolicy = "relay";
+```
+
+#### Dynamic Credentials
+To use dynamic TURN credentials with PHP:
+
+1. Rename `turn-credentials.php.sample` to `turn-credentials.php`
+2. Configure the PHP file:
+```php
+$expiry = 86400;
+$username = time() + $expiry;
+$secret = '<static-auth-secret>';
+$password = base64_encode(hash_hmac('sha1', $username, $secret, true));
+
+$turn_server = "turns:<turn-server>:<https-turn-port>";
+$stun_server = "stun:<stun-server>:<stun-port>";
+
+$arr = array($username, $password, $turn_server, $stun_server);
+echo json_encode($arr);
+```
+
+3. Add credential fetching code to index.html:
+```javascript
+try {
+    session.ws = false;
+    var phpcredentialsRequest = new XMLHttpRequest();
+    phpcredentialsRequest.onload = function() {
+        if (this.status === 200) {
+            var res = JSON.parse(this.responseText);
+            session.configuration = {
+                sdpSemantics: session.sdpSemantics,
+                iceServers: []
+            };
+
+            let phpIceServers = {
+                "username": res[0],
+                "credential": res[1],
+                urls: []
+            };
+            for (let i = 2; i < res.length; i++) {
+                phpIceServers['urls'].push(res[i]);
+            }
+            session.configuration.iceServers.push(phpIceServers);
+
+            if (session.ws === false) {
+                session.ws = null;
+                session.connect();
+            }
+        }
+    };
+    phpcredentialsRequest.open('GET', './turn-credentials.php', true);
+    phpcredentialsRequest.send();
+} catch (e) {
+    console.error(e);
+    errorlog("php-credentials script Failed");
+}
+```
 
 ## Support
 
