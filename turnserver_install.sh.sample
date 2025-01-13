@@ -97,10 +97,14 @@ install_coturn() {
     apt-get update
     apt-get install coturn curl dnsutils -y
     
-    # Configure system limits
-    echo "fs.file-max = 65535" >> /etc/sysctl.conf
-    sysctl -p
-    ulimit -n 65535
+	# Configure system limits
+	echo "fs.file-max = 65535" >> /etc/sysctl.conf
+	sudo sysctl -p
+	# Add permanent ulimit settings
+	echo "* soft nofile 65535" >> /etc/security/limits.conf
+	echo "* hard nofile 65535" >> /etc/security/limits.conf
+	echo "root soft nofile 65535" >> /etc/security/limits.conf
+	echo "root hard nofile 65535" >> /etc/security/limits.conf
     
     # Enable TURN server
     echo "TURNSERVER_ENABLED=1" > /etc/default/coturn
@@ -140,6 +144,17 @@ EOL
     systemctl enable coturn
     systemctl start coturn
 }
+
+# Swap setup
+if [ -f /swapfile ]; then
+    sudo swapoff -a
+    sudo rm /swapfile
+fi
+sudo fallocate -l 16G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 
 # Main script execution
 echo "TURN Server Installation and Configuration"
