@@ -280,7 +280,9 @@ async function main() {
 			//errorlog("WORKS!");
 			session.remoteInterfaceAPI(fauxEventData);
 		});
-		window.electronApi.updateVersion(session.version);
+		if (window.electronApi.updateVersion){
+			window.electronApi.updateVersion(session.version);
+		}
 	}
 
 	if (urlParams.has("retrytimeout")) {
@@ -351,7 +353,11 @@ async function main() {
 	if (urlParams.has("avatarimg") || urlParams.has("bgimage") || urlParams.has("bgimg")) {
 		// URL or data:base64 image. Becomes local to this viewer only.  This is like &avatar, but slightly different. Just CSS in this case
 		let avatarImg = urlParams.get("avatarimg") || urlParams.get("bgimage") || urlParams.get("bgimg") || "./media/avatar1.png";
-		if (avatarImg) {
+		if (avatarImg=="0" || avatarImg == "false" || avatarImg == "no"){
+			if (session.disableBackground!==false){
+				session.disableBackground = true;
+			}
+		} else if (avatarImg) {
 			try {
 				avatarImg = decodeURIComponent(avatarImg);
 			} catch (e) {}
@@ -364,8 +370,13 @@ async function main() {
 					if (session.meterStyle !== 5) {
 						document.documentElement.style.setProperty("--video-background-image-size", "contain");
 					}
+					session.disableBackground = false;
 				};
 			} catch (e) {}
+		} else {
+			if (session.disableBackground!==false){
+				session.disableBackground = true;
+			}
 		}
 	}
 	if (urlParams.has("avatarimg2") || urlParams.has("bgimage2") || urlParams.has("bgimg2")) {
@@ -841,6 +852,10 @@ async function main() {
 	}
 	
 	if (urlParams.has("nohistory")) {
+		session.nohistory = true;
+	} else if (urlParams.has("history")){
+		session.nohistory = false;
+	} else if (isIFrame){
 		session.nohistory = true;
 	}
 	
@@ -2070,6 +2085,7 @@ async function main() {
 		var avatar = urlParams.get("avatar") || false;
 		if (avatar && avatar == "default") {
 			session.avatar = document.getElementById("defaultAvatar2");
+			document.body.appendChild(session.avatar);
 			session.avatar.ready = false;
 			session.avatar.onload = () => {
 				session.avatar.ready = true;
@@ -2077,7 +2093,12 @@ async function main() {
 				getById("noAvatarSelected").classList.remove("selected");
 				getById("defaultAvatar1").classList.add("selected");
 				getById("defaultAvatar2").classList.add("selected");
+				updateRenderOutpipe();
+				session.avatar.classList.add("hidden");
 			};
+			session.avatar.onerror = () => {
+				session.avatar.classList.add("hidden");
+			}
 			if (session.avatar.complete) {
 				session.avatar.ready = true;
 				getById("noAvatarSelected3").classList.remove("selected");
@@ -2089,8 +2110,9 @@ async function main() {
 			try {
 				avatar = decodeURIComponent(avatar);
 			} catch (e) {}
-
+			
 			session.avatar = getById("defaultAvatar2");
+			document.body.appendChild(session.avatar);
 			session.avatar.ready = false;
 			session.avatar.onload = () => {
 				session.avatar.ready = true;
@@ -2098,12 +2120,25 @@ async function main() {
 				getById("noAvatarSelected").classList.remove("selected");
 				getById("defaultAvatar1").classList.add("selected");
 				getById("defaultAvatar2").classList.add("selected");
+				updateRenderOutpipe();
+				session.avatar.classList.add("hidden");
 			};
+			session.avatar.onerror = () => {
+				session.avatar.classList.add("hidden");
+			}
 			getById("defaultAvatar1").src = avatar;
 			getById("defaultAvatar2").src = avatar;
+		} else {
+			getById("avatarDiv3").classList.remove("hidden");
+			getById("avatarDiv").classList.remove("hidden");
 		}
-		getById("avatarDiv3").classList.remove("hidden");
-		getById("avatarDiv").classList.remove("hidden");
+		if (session.disableBackground!==false){
+			session.disableBackground = true;
+		}
+	}
+	
+	if (session.disableBackground){
+		document.documentElement.style.setProperty("--video-background-image", "unset");
 	}
 
 	if (urlParams.has("prompt") || urlParams.has("validate") || urlParams.has("approve")) {
@@ -3511,7 +3546,7 @@ async function main() {
 			getById("container-2").className = "column columnfade hidden";
 			getById("container-3").classList.add("skip-animation");
 			getById("container-3").classList.remove("pointer");
-			delayedStartupFuncs.push([previewWebcam]);
+			//delayedStartupFuncs.push([previewWebcam]);
 			session.webcamonly = true;
 		} else {
 			miniTranslate(getById("add_camera"), "share-your-mic", "Share your Microphone");
@@ -5497,11 +5532,11 @@ async function main() {
  
 	if (urlParams.has("effects") || urlParams.has("effect")) {
 		session.effect = urlParams.get("effects") || urlParams.get("effect") || null;
-	} else if (urlParams.has("zoom") || urlParams.has("digitalzoom")) {
+	} else if (urlParams.has("digitalzoom")) {
 		session.effect = "7";
-		if (urlParams.get("zoom") || urlParams.get("digitalzoom")){
-			session.effectValue = parseFloat(urlParams.get("zoom")) || parseFloat(urlParams.get("digitalzoom"));
-		}
+		if (urlParams.get("digitalzoom")){
+			session.effectValue_default = parseFloat(urlParams.get("digitalzoom")) || 1;
+		} 
 	}
 
 	if (session.effect && !session.cleanOutput) {
@@ -5509,7 +5544,11 @@ async function main() {
 			warnUser("⚠️ Notice: A recent update to Chrome/Edge can cause the browser to crash, especially when using &effects or &zoom.\n\nBrowser updates are rolling out to fix the issue, however avoiding the use of digital video effects for now might be prudent", 30000);
 		}
 	}
-
+	
+	if (urlParams.get("zoom")){
+		session.zoom = parseFloat(urlParams.get("zoom")) || false;
+		session.ptz = true;
+	}
 	if (urlParams.get("wb") || urlParams.get("whitebalance")) {
 		session.whiteBalance = urlParams.get("wb") || urlParams.get("whitebalance");
 	}
@@ -5531,6 +5570,7 @@ async function main() {
 	if (urlParams.get("focus")) {
 		session.focusDistance = urlParams.get("focus");
 	}
+	
 
 	if (urlParams.has("wss")) {
 		session.customWSS = true;
@@ -5625,7 +5665,7 @@ async function main() {
 		} else if (session.effect === "3") {
 			session.effectValue = 2;
 		} else if (session.effect === "7") {
-			session.effectValue = 1;
+			session.effectValue = session.effectValue || 1;
 		} else if (["15", "14"].includes(session.effect)) {
 			session.effectValue = 25;
 			getById("effectSelector").style.display = "none";
@@ -6359,10 +6399,10 @@ async function main() {
 			session.effectValue = 1;
 		}
 		getById("selectEffectAmountInput").min = 1;
-		getById("selectEffectAmountInput").max = 1.99;
+		getById("selectEffectAmountInput").max = 3.99;
 		getById("selectEffectAmountInput").step = 0.01;
 		getById("selectEffectAmountInput3").min = 1;
-		getById("selectEffectAmountInput3").max = 1.99;
+		getById("selectEffectAmountInput3").max = 3.99;
 		getById("selectEffectAmountInput3").step = 0.01;
 
 		getById("selectEffectAmountInput").value = session.effectValue;

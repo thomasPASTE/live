@@ -4992,8 +4992,9 @@ function setupIncomingVideoTracking(v, UUID) {
 			v.resetAR = true;
 			return;
 		} // if Audio only, then we don't want to set or update any aspect ratio.
-
-		if (session.keepIncomingVideosInLandscape) {
+		if (typeof v.manualRotate == "number"){
+			//v.rotated = v.manualRotate; // ((session.rotate || 0) + 90) % 360;
+		} else if (session.keepIncomingVideosInLandscape) {
 			if (aspectRatio < 1) {
 				// session.keepIncomingVideosInLandscape
 				v.rotated = session.keepIncomingVideosInLandscape;
@@ -6828,6 +6829,7 @@ function updateMixerRun(e = false) {
 			}
 			posCount += 1;
 		}
+	
 	} else if (session.rows && mediaPool.length) {
 		try {
 			customLayout = {};
@@ -6838,17 +6840,48 @@ function updateMixerRun(e = false) {
 			} else {
 				rows = parseInt(session.rows[session.rows.length - 1]) || 1;
 			}
-			let cols = Math.ceil(n / rows) || 1;
+			
+			if (rows<0){
+				rows = Math.abs(rows);
+				let cols = Math.ceil(n / rows) || 1;
+				for (var i = 0; i < n; i++) {
+					let col = i % cols;
+					let row = parseInt(i / cols) % rows;
+					
+					if (row === Math.floor((n-1)/cols) && n % cols !== 0) {  // Last row logic
+						let itemsInLastRow = n % cols || cols;
+						let offset = (cols - itemsInLastRow) * (100 / cols) / 2;
+						customLayout[mediaPool[i].dataset.sid] = {
+							y: (100 / rows) * row,
+							h: 100 / rows,
+							x: offset + (100 / cols) * col,
+							w: 100 / cols,
+							c: session.cover
+						};
+					} else {
+						customLayout[mediaPool[i].dataset.sid] = {
+							y: (100 / rows) * row,
+							h: 100 / rows,
+							x: (100 / cols) * col,
+							w: 100 / cols,
+							c: session.cover
+						};
+					}
+				}
+			} else {
+			
+				let cols = Math.ceil(n / rows) || 1;
 
-			for (var i = 0; i < n; i++) {
-				let col = i % cols;
-				let row = parseInt(i / cols) % rows;
-				//console.log(row,col, rows,cols,i,n)
-				if (cols >= 2 && rows >= 2 && n < (row + 1) * cols) {
-					let delta = (row + 1) * cols - n;
-					customLayout[mediaPool[i].dataset.sid] = { y: (100 / rows) * row, h: 100 / rows, x: (100 / cols) * (col + delta), w: 100 / cols, c: session.cover };
-				} else {
-					customLayout[mediaPool[i].dataset.sid] = { y: (100 / rows) * row, h: 100 / rows, x: (100 / cols) * col, w: 100 / cols, c: session.cover };
+				for (var i = 0; i < n; i++) {
+					let col = i % cols;
+					let row = parseInt(i / cols) % rows;
+					//console.log(row,col, rows,cols,i,n)
+					if (cols >= 2 && rows >= 2 && n < (row + 1) * cols) {
+						let delta = (row + 1) * cols - n;
+						customLayout[mediaPool[i].dataset.sid] = { y: (100 / rows) * row, h: 100 / rows, x: (100 / cols) * (col + delta), w: 100 / cols, c: session.cover };
+					} else {
+						customLayout[mediaPool[i].dataset.sid] = { y: (100 / rows) * row, h: 100 / rows, x: (100 / cols) * col, w: 100 / cols, c: session.cover };
+					}
 				}
 			}
 		} catch (e) {
@@ -21793,8 +21826,7 @@ async function createRoom(roomname = false, reload = false) {
 		}
 		log(roomname);
 
-		var passwordRoom = getById("passwordRoom").value;
-		passwordRoom = sanitizePassword(passwordRoom);
+		var passwordRoom = document.getElementById("passwordRoom") ? sanitizePassword(document.getElementById("passwordRoom").value) : "";
 	}
 
 	session.roomid = roomname;
@@ -28671,6 +28703,13 @@ async function grabVideo(quality = 0, eleName = "previewWebcam", selector = "sel
 									} catch (e) {
 										warnlog(e);
 									}
+								}
+							}
+							if (session.zoom !== false) {
+								try {
+									await track.applyConstraints({ advanced: [{ zoom: parseFloat(session.zoom) }] });
+								} catch (e) {
+									errorlog(e);
 								}
 							}
 							if (session.saturation !== false) {
@@ -36362,6 +36401,9 @@ function applySavedVideoSettings(track0) {
 								} else if (session.exposure && i === "exposureTime") {
 									log("This is manaually set via URL");
 									continue;
+								} else if (session.zoom && i === "zoom") {
+									log("This is manaually set via URL");
+									continue;
 								} else if (session.exposure && i === "exposureMode") {
 									log("This is manaually set via URL");
 									continue;
@@ -38860,6 +38902,30 @@ function pauseVideo(videoEle, update = true) {
 					taskItemInContext.mirror = true;
 					applyMirrorGuest(taskItemInContext.mirror, taskItemInContext);
 				}
+			}
+		} else if (link.getAttribute("data-action") === "Rotate") {
+			if (taskItemInContext.id == "videosource" || taskItemInContext.id == "previewWebcam") {
+				session.rotate = ((session.rotate || 0) + 90) % 360;
+				if (Firefox && session.mobile){
+					updateForceRotate(true);
+				} else {
+					updateForceRotate(false);
+				}
+				log("session.rotate");
+				setTimeout(function () {
+					updateMixer();
+				}, 1);
+			} else {
+				if ("manualRotate" in taskItemInContext) { 
+					taskItemInContext.manualRotate = ((taskItemInContext.manualRotate || 0) + 90) % 360;
+					taskItemInContext.rotated = taskItemInContext.manualRotate;
+				} else {
+					taskItemInContext.manualRotate = ((taskItemInContext.rotated || 0 ) + 90) % 360;
+					taskItemInContext.rotated =  taskItemInContext.manualRotate;
+				}
+				setTimeout(function () {
+					updateMixer();
+				}, 1);
 			}
 		} else if (link.getAttribute("data-action") === "FullWindow") {
 			if (taskItemInContext.id == "videosource" || taskItemInContext.id == "previewWebcam") {
@@ -46214,7 +46280,6 @@ function whipOut() {
 					} catch (e) {
 						errorlog(e);
 					}
-
 					try {
 						log(this.getAllResponseHeaders());
 						if (this.getAllResponseHeaders().indexOf("whep") >= 0) {
@@ -46224,10 +46289,18 @@ function whipOut() {
 						}
 						if (!WHELPlaybackURL && session.whipOutput) {
 							var targetDomain = session.whipOutput.split("/");
-							if (targetDomain.length > 2 && targetDomain[2].endsWith(".cloudflarestream.com") && targetDomain[3].length == 65) {
-								WHELPlaybackURL = "https://" + targetDomain[2] + "/" + targetDomain[3].slice(33, 65) + "/webRTC/play";
-								session.whipOut.stats.whipHost = "Cloudflare";
+							try {
+								if (targetDomain.length > 2 && targetDomain[2].endsWith(".cloudflarestream.com") && targetDomain[3].length == 65) {
+									WHELPlaybackURL = "https://" + targetDomain[2] + "/" + targetDomain[3].slice(33, 65) + "/webRTC/play";
+									session.whipOut.stats.whipHost = "Cloudflare";
+								} else if (/^https?:\/\/(?:[\w-]+\.)*meshcast\.io(?:\/|$)/i.test(session.whipOutput)){ // this should be only if meshcast doens't return a whep URL.  we guess as a fallback.
+									session.whipOut.stats.whipHost = "Meshcast";
+									session.whipOut.stats.watch_URL = "https://meshcast.io/view.html?geo="+session.whipOutput.split("https://")[1].split(".")[0]+"&id="+session.whipOutput.split("meshcast.io/")[1].split("/whip")[0];
+								}
+							} catch(e){
+								errorlog(e);
 							}
+							
 						} else if (WHELPlaybackURL && !(WHELPlaybackURL.startsWith("http://") || WHELPlaybackURL.startsWith("https://"))) {
 							var targetDomain = session.whipOutput.split("/");
 							if (targetDomain.length > 2) {
@@ -46237,7 +46310,15 @@ function whipOut() {
 									WHELPlaybackURL = targetDomain[0] + "//" + targetDomain[2] + "/" + WHELPlaybackURL;
 								}
 							}
+						} else if (WHELPlaybackURL && /^https?:\/\/(?:[\w-]+\.)*meshcast\.io(?:\/|$)/i.test(WHELPlaybackURL)){ // this should be only if meshcast doens't return a whep URL.  we guess as a fallback.
+							try {
+								session.whipOut.stats.whipHost = "Meshcast";
+								session.whipOut.stats.watch_URL = "https://meshcast.io/view.html?geo="+WHELPlaybackURL.split("https://")[1].split(".")[0]+"&id="+WHELPlaybackURL.split("meshcast.io/")[1].split("/whip")[0];
+							} catch(e){
+								errorlog(e);
+							}
 						}
+						
 						log("WHELPlaybackURL: " + WHELPlaybackURL);
 						session.whipOut.stats.whep_URL = WHELPlaybackURL;
 					} catch (e) {
@@ -46547,7 +46628,11 @@ function whipClient() {
 				var data = JSON.parse(event.data);
 
 				if ("sdp" in data) {
-					var resp = await processWhipIn(data);
+					try {
+						var resp = await processWhipIn(data);
+					} catch(e){
+						var resp = e?.message || e.toString();
+					}
 					if (resp) {
 						var ret = {};
 						var get = data.get;
@@ -46575,6 +46660,8 @@ function whipClient() {
 						ret.callback = data;
 						socket.send(JSON.stringify(ret));
 					}
+				} else {
+					warnlog("Unsupported incoming data");
 				}
 			}
 		});
@@ -46904,22 +46991,21 @@ async function whepIn(whepInput = false, whepInputToken = false, UUID = false) {
 		try {
 			if (!(UUID in session.rpcs)) {
 				session.rpcs[UUID] = {};
+				session.rpcs[UUID].stats = {};
+				session.rpcs[UUID].allowGraphs = false;
+				session.rpcs[UUID].allowDrawing = false;
+				session.rpcs[UUID].inboundAudioPipeline = {};
+				session.rpcs[UUID].channelOffset = false;
+				session.rpcs[UUID].channelWidth = false;
+				session.rpcs[UUID].settings = false;
+				session.rpcs[UUID].defaultSpeaker = false;
+				session.rpcs[UUID].lockedVideoBitrate = false; // doesn't do anything
+				session.rpcs[UUID].lockedAudioBitrate = false;
+				session.rpcs[UUID].manualBandwidth = false; // doesn't do anything, except maybe help keep track of pause/play states
+				session.rpcs[UUID].motionDetectionInterval = false;
+				session.rpcs[UUID].buffer = false;
+				session.rpcs[UUID].getStatsTimeout = null;
 			}
-			
-			session.rpcs[UUID].stats = {};
-			session.rpcs[UUID].allowGraphs = false;
-			session.rpcs[UUID].allowDrawing = false;
-			session.rpcs[UUID].inboundAudioPipeline = {};
-			session.rpcs[UUID].channelOffset = false;
-			session.rpcs[UUID].channelWidth = false;
-			session.rpcs[UUID].settings = false;
-			session.rpcs[UUID].defaultSpeaker = false;
-			session.rpcs[UUID].lockedVideoBitrate = false; // doesn't do anything
-			session.rpcs[UUID].lockedAudioBitrate = false;
-			session.rpcs[UUID].manualBandwidth = false; // doesn't do anything, except maybe help keep track of pause/play states
-			session.rpcs[UUID].motionDetectionInterval = false;
-			session.rpcs[UUID].buffer = false;
-			session.rpcs[UUID].getStatsTimeout = null;
 
 			if (!session.configuration) {
 				await chooseBestTURN();

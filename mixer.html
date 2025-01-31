@@ -1337,7 +1337,11 @@
 	
 	document.documentElement.style.setProperty('--iframe-width', ww);
 	document.documentElement.style.setProperty('--iframe-height',hh);
-		
+	
+	if (urlParams.has("transparent")) {
+	  document.querySelector("#canvas").style.backgroundColor = "transparent";
+	  document.body.style.backgroundColor = "transparent";
+	}
 	
 	var roomname = false;
 	if (urlParams.has("room") || urlParams.has("r") ||urlParams.has("dir") || urlParams.has("director")){

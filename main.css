@@ -3599,6 +3599,7 @@ span[data-resolution]:hover, span[data-bitrate]:hover {
 	height: 0px;
 	opacity: 0;
 }
+
 .grabLinks a:visited {
 	color: black !important;
 }
