@@ -37932,7 +37932,7 @@ function createIframePopup() {
 		return;
 	} // can't secondary-screen share if in a queue.
 
-	if (!session.iFramesAllowed){errorlog("Can't create iFRAME - security is tainted due to possible CSS injection");return;}
+	//if (!session.iFramesAllowed){errorlog("Can't create iFRAME - security is tainted due to possible CSS injection");return;} // allow because we are doing &sstype=2; not anything else.
 	var iframe = document.createElement("iframe");
 	iframe.allow = "autoplay;camera;microphone;fullscreen;picture-in-picture;display-capture;midi;screen-wake-lock;"; // do not allow location
 	iframe.src = "./" + createScreenShareURL();
@@ -46631,7 +46631,7 @@ function whipClient() {
 					try {
 						var resp = await processWhipIn(data);
 					} catch(e){
-						var resp = e?.message || e.toString();
+						var resp = e && (e.message || e.toString());
 					}
 					if (resp) {
 						var ret = {};

@@ -6058,9 +6058,14 @@ async function main() {
 				//	getById("head3").classList.remove('hidden');
 				//	getById("head3a").classList.remove('hidden');
 			}
-		} else if (window.obsstudio && session.permaid === false && session.director === false && ((session.view!==false) || session.whepInput || session.whipView) && session.roomid.length > 0) {
+		} else if (window.obsstudio && !session.webcamonly && session.permaid === false && session.director === false && ((session.view!==false) || session.whepInput || session.whipView) && session.roomid.length > 0) {
 			// we already know roomid !== false
 			updateURL("scene", true, false); // we also know it's not a scene, but we will assume it is in this specific case.
+			session.scene = 0;
+		} else if (window.obsstudio && !session.webcamonly && !session.cleanOutput && (session.permaid === false) && (session.director === false) && (session.view===false) && !session.whepInput && !session.whipView && (session.roomid.length > 0)) {
+			try {
+					getById("unexpectedPushLink").classList.remove("hidden");
+			} catch (e) {}
 		}
 	} else if (session.director) {
 		// if I do a short form of this, it will cause duplications in the code elsewhere.
