@@ -107,7 +107,8 @@ const updateList = [
 	"pt-br",
     "ru",
     "tr",
-	"uk"
+	"uk",
+	"ar"
 ]; // list of languages to update. Update this if you add a new language.
 
 const allItems = document.querySelectorAll('[data-translate]');
