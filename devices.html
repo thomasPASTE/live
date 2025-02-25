@@ -206,22 +206,56 @@
 				document.execCommand("copy");
 			};
 
-			navigator.mediaDevices
-				.enumerateDevices()
-				.then((devices) => {
-					devices.forEach((device) => {
-						console.log(
-							`${device.kind}: ${device.label} id = ${device.deviceId}`
-						);
-						list.push(device);
-					});
-					prettyPrint(devices.filter(isAudioInput), "audioInputs");
-					prettyPrint(devices.filter(isAudioOutput), "audioOutputs");
-					prettyPrint(devices.filter(isVideoInput), "videoInputs");
-				})
-				.catch((err) => {
-					console.log(`${err.name}: ${err.message}`);
-				});
+			async function requestPermissions() {
+				try {
+					// Request temporary audio/video access to get device labels
+					await navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+						.then(stream => {
+							// Stop all tracks immediately after getting permission
+							stream.getTracks().forEach(track => track.stop());
+						})
+						.catch(err => {
+							console.warn("Partial permission denied:", err.name);
+							// Still try to enumerate even with partial permission
+						});
+				} catch (e) {
+					console.warn("Permission request failed:", e);
+				}
+			}
+			async function enumerateDevices() {
+				try {
+					const devices = await navigator.mediaDevices.enumerateDevices();
+					
+					// If we don't have labels, request permissions and try again
+					if (devices.some(device => !device.label)) {
+						await requestPermissions();
+						const devicesWithLabels = await navigator.mediaDevices.enumerateDevices();
+						devices.forEach((device) => {
+							console.log(
+								`${device.kind}: ${device.label} id = ${device.deviceId}`
+							);
+							list.push(device);
+						});
+						prettyPrint(devicesWithLabels.filter(isAudioInput), "audioInputs");
+						prettyPrint(devicesWithLabels.filter(isAudioOutput), "audioOutputs");
+						prettyPrint(devicesWithLabels.filter(isVideoInput), "videoInputs");
+					} else {
+						// We already have labels, proceed normally
+						devices.forEach((device) => {
+							console.log(
+								`${device.kind}: ${device.label} id = ${device.deviceId}`
+							);
+							list.push(device);
+						});
+						prettyPrint(devices.filter(isAudioInput), "audioInputs");
+						prettyPrint(devices.filter(isAudioOutput), "audioOutputs");
+						prettyPrint(devices.filter(isVideoInput), "videoInputs");
+					}
+				} catch (err) {
+					console.error(`${err.name}: ${err.message}`);
+				}
+			}
+			enumerateDevices();
 		</script>
 	</body>
 </html>

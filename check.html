@@ -232,6 +232,8 @@
 			var Round_Trip_Time_ms = "";
 			var recordResults = false;
 			
+			var iframe1 = document.createElement("iframe");
+			
 			function copyFunction(copyText) {
 				alert("Log copied to the clipboard.");
 				try {
@@ -368,6 +370,9 @@
 					}
 					
 					if (e.data.action == "started-camera"){
+						loadIframe2();
+						document.getElementById("localVideoText").innerText =  "Local video before transmission";
+					} else if (e.data.action == "screen-share-state" && e.data.value){
 						loadIframe2();
 						document.getElementById("localVideoText").innerText =  "Local video before transmission";
 					} 
@@ -518,6 +523,11 @@
 				region = urlParams.get("region");
 			}
 			
+			var testType= "webcam&quality=0&css=speedtest.css";
+			if (urlParams.has("screen") || urlParams.has("ss") || urlParams.has("screenshare") || urlParams.has("screentest")) {
+				testType = "quality=0&screenshare&css=speedtest.css"
+			}
+			
 			<!-- <option selected value="">Automatic</option> -->
 			<!-- <option value="de1">Saarbruecken, Germany</option> -->
 			<!-- <option value="de2">Frankfurt, Germany</option> -->
@@ -535,7 +545,7 @@
 			<!-- <option value="ind1">Mumbai, India</option> -->
 			<!-- <option value="pol1">Warsaw, Poland</option> -->
 
-			var iframe1 = document.createElement("iframe");
+			
 			
 			function loadIframe(zone="") {
 				// this is pretty important if you want to avoid camera permission popup problems. YOu need to load the iFRAME after  you load the parent body. A quick solution is like: <body onload=>loadIframe();"> !!!
@@ -572,7 +582,11 @@
 				iframeContainer.appendChild(iframe1);
 
 				var title = document.createElement("h3");
-				title.innerText = "Select the camera you intend to use";
+				if (urlParams.has("screen") || urlParams.has("ss") || urlParams.has("screenshare") || urlParams.has("screentest")) {
+					title.innerHTML = "Select the screen, tab, or window you intend to share.<br><br><small>For best results, the content being shared should contain motion.  A blank static page likely will not be sufficient.</small>";
+				} else {
+					title.innerHTML = "Select the camera you intend to use.<br><br><small>For best results, the content being captured should contain motion. A blank static page will not be sufficient.</small>";
+				}
 				title.id = "localVideoText";
 				iframeContainer.appendChild(title);
 
@@ -598,9 +612,13 @@
 
 			function loadIframe2(zone="") {
 				
+				if (document.getElementById("testframe")){
+					return;
+				}
 				//document.getElementById("graphs").classList.remove('hidden');
 				var iframe = document.createElement("iframe");
 				var iframeContainer = document.createElement("span");
+				iframe.id = "testframe";
 
 				iframe.allow = "autoplay";
 				var srcString = "./index.html?view=" + streamID + "&cleanoutput&privacy&noaudio&transparent&bitrate=6000&scale=100&speedtest="+zone; // No TURN servers set on the reciever. Don't want to query for TURN servers needlessly.
@@ -718,12 +736,6 @@
 				}, 1000, iframe);
 			}
 
-		
-			var testType= "webcam&quality=0&css=speedtest.css";
-			if (urlParams.has("screen") || urlParams.has("ss") || urlParams.has("screenshare") || urlParams.has("screentest")) {
-				document.getElementById("screen").innerHTML = '<a href="./speedtest.html" style="color: #CCC;">Test webcam-streaming performance here</a>';
-				testType = "quality=0&screenshare&css=speedtest.css"
-			}
 			
 			var bitrate = {
 				element: "bitrate-graph",

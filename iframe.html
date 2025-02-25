@@ -25,10 +25,12 @@
 		}
 		var container = document.getElementById("container");
 		var iframe = newElement("iframe", {
-			allow: "document-domain;encrypted-media;sync-xhr;usb;web-share;cross-origin-isolated;accelerometer;midi;geolocation;autoplay;camera;microphone;fullscreen;picture-in-picture;display-capture;gyroscope;",
+			allow: "document-domain;encrypted-media;sync-xhr;usb;web-share;cross-origin-isolated;accelerometer;midi;geolocation;autoplay;camera;microphone;fullscreen;picture-in-picture;display-capture;accelerometer;midi;geolocation;autoplay;gyroscope;screen-wake-lock;",
 			src: addUrlParams(iframesrc, ["cleanoutput", "transparent", "hidemenu"])
 		});
 		iframe.setAttribute("allowtransparency", "true");
+		iframe.setAttribute("crossorigin", "anonymous");
+		iframe.setAttribute("credentialless", "true");
 		var iframeExample = newElement("div", { id: exampleId, classList: "iframe-example" });
 		var exampleHeader = newElement("div", { classList: "example-header", innerHTML: iframesrc });
 		var exampleBody = newElement("div", { classList: "example-body" });

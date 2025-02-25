@@ -1,156 +1,278 @@
-## Install and setup guide for a TURN Relay Server
+# TURN Server Setup Guide
 
-#### why? You may want to deploy one to ensure high compatiblity with remote guests. If you try to use the official VDO.Ninja TURN servers for a private deployment, you may find yourself getting kicked off.
+## Understanding STUN vs TURN
 
-This install script and config file was used with a standard virtual machine server loaded with Ubuntu 20.  GCP/AWS servers might need slightly different settings.
+WebRTC tries to establish peer-to-peer connections using the following methods, in order:
+1. Direct connection
+2. STUN - helps peers discover their public IP address and port
+3. TURN - relays traffic between peers when direct/STUN connections fail
 
-```
-sudo apt-get update # update package lists
- 
-sudo apt-get install coturn -y # install coturn, the implementation of the TURN server
-sudo vi /etc/default/coturn # open the coturn configuration in Vim (you can also use nano or any other editor)
-```
-...and we uncomment the line:
-```
-#TURNSERVER_ENABLED=1
-```
-….leaving it like this:
-```
-TURNSERVER_ENABLED=1
-```
-If we want to support TCP / TLS, we need an SSL certificate installed. Certbot has lots of issues to work around, but it's free. If you buy a cert some where else, you may need to convert your certificate to one that's compatible with coturn. Either way, adding TCP/TLS is a pain that isn't needed for 99% of the users out there.
-```
-sudo add-apt-repository ppa:certbot/certbot # Add the certbot repository
-sudo apt-get install certbot -y # Install certbot required for the HTTPS certificate
-sudo certbot certonly --standalone # only generate the HTTPS certificate without actually changing any configs
-```
-If you want to setup a firewall or configure an existing firewall, you can see the below setup and configurations.  This can often be skipped for new Ubuntu installations, but I'll leave that up to you
-```
-sudo apt install net-tools
-sudo ufw allow 3478/tcp # The default coturn TCP port
-sudo ufw allow 3478/udp # The default coturn UDP port
-sudo ufw allow 3479/tcp # Sometimes port+1 is used
-sudo ufw allow 3479/udp # Sometimes port+1 is used
-sudo ufw allow 443/tcp # The HTTPS TCP port
-sudo ufw allow 443/udp # The HTTPS UDP port
-sudo ufw allow 49152:65535/tcp
-sudo ufw allow 49152:65535/udp
-```
-If we expect heavy usage of this server, like hundreds of connections, you might want to ensure your system supports enough open sockets. I'm not sure if this actually works or is needed, but you can see this article for example on how to increase the number of available sockets on Ubuntu: https://medium.com/@muhammadtriwibowo/set-permanently-ulimit-n-open-files-in-ubuntu-4d61064429a 
+### STUN (Session Traversal Utilities for NAT)
+- Lightweight protocol that helps peers behind NAT discover their public IP address
+- Low bandwidth usage as it only helps with connection discovery
+- No relay costs, but doesn't work when peers are behind strict firewalls
 
-If you do want to increase the connection limit, for larger systems, it's as follows:
-```
-ulimit -n 65535
-sudo vim /etc/sysctl.conf
-```
-Add the following line to the file anywhere (with vim, press i to insert new text and :wq to save and exit)
-```
-fs.file-max = 65535
-```
-Once saved, you can apply the changes
-```
-sudo sysctl -p
-```
-And that should have set the connection limit to be higher now.
+### TURN (Traversal Using Relays around NAT)
+- Relays all traffic through the server when direct/STUN connections fail
+- Higher bandwidth usage and server costs
+- Required for peers behind symmetric NATs or strict firewalls
+- More reliable but should only be used as a fallback
 
-Next, update turnserver.conf with passwords, domain names, and whatever else that needs changing.  Example contents are provided below.  Once you have updated it, start the TURN server and ensure it started correctly.  At the bottom of this page is a sample conf file; I personally use `turnserver3.conf` (https://github.com/steveseguin/vdo.ninja/blob/master/turnserver3.conf), which is hosted in the main repo, for quick TURN deployments.
+## Quick Install
 
-```
-sudo vi /etc/turnserver.conf
-```
-Tip: For those doing their own LAN-deployment, you might want to add STUN-support to the TURN server while at it. Refer to the co-turn documentation for help there though.
+The installer script automates the complete TURN server setup process:
 
-Next, once we have all the settings and configs setup, we can enable the system service for co-turn to auto-start on boot.
+```bash
+# Download the installer
+wget https://raw.githubusercontent.com/steveseguin/vdo.ninja/develop/turnserver_install.sh.sample
+mv turnserver_install.sh.sample turnserver_install.sh
+chmod +x turnserver_install.sh
 
-This is our service file; it should exist.
-```
-sudo vi /usr/lib/systemd/system/coturn.service
-```
-To ensure it's enabled, try this:
-```
-sudo systemctl daemon-reload
-sudo systemctl enable coturn
+# Run the installer
+sudo ./turnserver_install.sh
 ```
 
-To start the co-turn service and to see if it had any errors:
+The installer will:
+1. Install coturn and dependencies
+2. Configure system limits for high connection loads
+3. Set up base TURN/STUN configuration
+4. Optionally configure SSL/TLS support
+5. Create systemd service for auto-start
+6. Configure proper permissions
+
+## Basic Configuration Explained
+
+The basic configuration (`turnserver_basic.conf`) provides a minimal but functional TURN server:
+
+```conf
+listening-port=3478        # Standard STUN/TURN port
+fingerprint               # Required for WebRTC
+lt-cred-mech             # Long-term credential mechanism
+user=username:password    # Authentication credentials
+realm=turn.example.com   # Your server's domain
+server-name=turn.example.com
+no-multicast-peers       # Security measure
+no-stdout-log           # Disable stdout logging
 ```
-sudo systemctl restart coturn
+
+## SSL/TLS Support (Optional)
+
+The installer can configure SSL/TLS support which:
+- Enables TURNS (TURN over TLS) on port 443
+- Automatically obtains and renews SSL certificates via certbot
+- Configures automatic certificate reload without server restart
+
+## Testing Your Server
+
+Test your TURN server at: https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/
+
+Example configurations to test:
+- STUN/TURN: `turn:your-domain:3478`
+- TURNS (if SSL enabled): `turns:your-domain:443`
+
+## Firewall Configuration
+
+Required ports:
+- 3478 TCP/UDP (STUN/TURN)
+- 443 TCP/UDP (TURNS, if enabled)
+- 49152:65535 TCP/UDP (Media relay ports)
+
+### Configuring Firewall
+
+The following can be used to configure your `ufw` firewall on Linux if needed. Adjust accordingly.
+
+```bash
+# SSH (add this first to avoid lockout)
+sudo ufw allow 22/tcp    # SSH access
+
+# Core TURN/STUN ports
+sudo ufw allow 3478/tcp  # Default TURN/STUN TCP
+sudo ufw allow 3478/udp  # Default TURN/STUN UDP
+
+# If using TLS/SSL
+sudo ufw allow 443/tcp   # TURN TLS
+sudo ufw allow 443/udp   # TURN TLS/DTLS
+
+# If using Certbot for SSL renewals
+sudo ufw allow 80/tcp   # HTTP
+
+# Media relay ports
+sudo ufw allow 49152:65535/tcp  # TCP relay ports
+sudo ufw allow 49152:65535/udp  # UDP relay ports
+
+# Optional if you want alt-port support
+sudo ufw allow 3479/tcp  # Alternative port (port+1)
+sudo ufw allow 3479/udp  # Alternative port (port+1)
+
+# Enable UFW if not already enabled
+sudo ufw enable
+```
+
+## Advanced Usage
+
+### Reloading SSL Certificates
+```bash
+sudo systemctl --signal=SIGUSR2 kill coturn
+```
+
+### Checking Server Status
+```bash
 sudo systemctl status coturn
 ```
-You can then validate that things are working at the following site:
 
-https://webrtc.github.io/samples/src/content/peerconnection/trickle-ice/
+### Updating Configuration
+1. Edit `/etc/turnserver.conf`
+2. Restart service: `sudo systemctl restart coturn`
 
-An example URL is `turn:turnserver.mydomain.com:3478`
-or for TCP/TLS, try `turns:turnTLS.mydomain.com:443`
+## Common Issues
 
-note: If you run into error 701 issues with your TURN server, check that the coturn service has access to your new SSL certificates:
-see this issue with coturn: https://github.com/coturn/coturn/issues/268
+1. **Permission denied errors**
+   - The installer handles this by setting proper capabilities
+   - Manual fix: `sudo setcap cap_net_bind_service=+ep /usr/bin/turnserver`
 
-You might also want to consider buying a better certificiate, as not all Google-related projects properly support certbot certificates, including libwebrtc. see [this issue ticket](https://github.com/coturn/coturn/issues/240#issuecomment-648550885).  If you go this route, see [turnserver2.conf](https://github.com/steveseguin/vdo.ninja/blob/master/turnserver2.conf) for an example config.
+2. **SSL certificate errors (701)**
+   - Verify certificate permissions
+   - Check certificate paths in configuration
+   - Ensure certificates are readable by turnserver user
 
-Next, we may want to update the User and Group values in our service file to be "root". This seems to be a quick hacky fix for the issue with Lets Encrypt. ..  I welcome a better solution tho.  If you move the certs somewhere else, or buy proper certificates, then the default turnserver user/group will work.
+## Production Considerations
 
-Ultimately though, if you are still getting the 701 error -- just test to see if the TURN service works; if it does, the error can probably be ignored.
+1. **System Limits**
+   The installer configures higher system limits for production use:
+   - File descriptors: 65535
+   - System max files: 65535
 
+2. **Monitoring**
+   - Monitor bandwidth usage
+   - Watch for high CPU/memory usage
+   - Track active connections
 
-The following are the contents of an example /etc/turnserver.conf file from above
-```
-## sudo vi /etc/turnserver.conf
+3. **Security**
+   - Regularly update credentials
+   - Monitor for abuse
+   - Keep coturn and SSL certificates up to date
+   
 
-listening-port=3478
-## TLS needs an SSL certificate and domain, but enables TCP
-tls-listening-port=443
+## VDO.Ninja Configuration
 
-# min-port=49152
-# max-port=65535
+You have different ways to set and specify a TURN server in VDO.Ninja; see below.
 
-realm=turn.obs.ninja
-server-name=turn.obs.ninja
+### URL Parameters
 
-## webrtc likes to use this
-fingerprint
-
-## Lets just use Google since its more reliable
-no-stun
-
-lt-cred-mech
-user=SOMESUERNAME:SOMEPASSWQORD
-
-stale-nonce=600
-
-## depreciated in newer coturn
-# no-loopback-peers
-
-## prevents hackers from hacking
-no-multicast-peers
-
-## 1-gbps/100 users = ~ 1-mbps each with this setting then
-total-quota=100
-
-cert=/etc/letsencrypt/live/turn.obs.ninja/fullchain.pem
-pkey=/etc/letsencrypt/live/turn.obs.ninja/privkey.pem
-
-## Tweaks to fix some lets encrypt errors
-cipher-list="ECDHE-RSA-AES256-GCM-SHA512:DHE-RSA-AES256-GCM-SHA512:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384"
-no-sslv3
-no-tlsv1
-no-tlsv1_1
-# no-tlsv1_2
-dh2066
-
-# no-udp
-# no-tcp
-
-# verbose
-no-stdout-log
-
-## optional
-proc-user=root
-proc-group=root
+#### TURN Server Configuration
+Use `&turn` to specify custom TURN servers or modify TURN behavior:
 
 ```
+&turn=user;pwd;turnserveraddress
+```
 
-For those who are using Certificates with their coturn installations, you can use `sudo systemctl --signal=SIGUSR2 kill coturn` to reload the certs in coturn without restarting and disconnecting current users. This can be especially useful for certbot users, who need to update every few months; triggering the command after certbot runs could make life easy.
+Examples:
+- Custom TURN: `&turn=steve;setupYourOwnPlease;turn:turn.vdo.ninja:443`
+- Disable TURN: `&turn=false` or `&turn=off`
+- Use Twilio: `&turn=twilio`
+- No STUN: `&turn=nostun`
 
-Anyways, setting this all up is easier said then done. My suggestion is to start simple, get that working, and if needed, improve from there. good luck!
+#### Force TURN Usage
+Use `&relay`, `&private`, or `&privacy` to force TURN relay usage:
+- Forces the use of TURN servers instead of direct connections
+- Hides IP addresses from peers
+- May increase latency
+- Useful for testing or privacy requirements
+
+### Manual Configuration
+
+#### Basic Configuration
+Add to index.html before loading main.js but after webrtc.js:
+
+```javascript
+var session = WebRTC.Media;
+session.version = "26.5";
+session.streamID = session.generateStreamID();
+
+session.defaultPassword = "someEncryptionKey123";
+session.stunServers = [{ 
+    urls: ["stun:stun.l.google.com:19302", "stun:stun.cloudflare.com:3478"]
+}];
+
+// Basic TURN Setup
+session.configuration = {
+    iceServers: session.stunServers,
+    sdpSemantics: session.sdpSemantics
+};
+
+var turn = {
+    username: "steve",
+    credential: "justtesting",
+    urls: ["turn:turn.obs.ninja:443"]
+};
+session.configuration.iceServers.push(turn);
+
+// Force TURN relay
+// session.configuration.iceTransportPolicy = "relay";
+```
+
+#### Dynamic Credentials
+To use dynamic TURN credentials with PHP:
+
+1. Rename `turn-credentials.php.sample` to `turn-credentials.php`
+2. Configure the PHP file:
+```php
+$expiry = 86400;
+$username = time() + $expiry;
+$secret = '<static-auth-secret>';
+$password = base64_encode(hash_hmac('sha1', $username, $secret, true));
+
+$turn_server = "turns:<turn-server>:<https-turn-port>";
+$stun_server = "stun:<stun-server>:<stun-port>";
+
+$arr = array($username, $password, $turn_server, $stun_server);
+echo json_encode($arr);
+```
+
+3. Add credential fetching code to index.html:
+```javascript
+try {
+    session.ws = false;
+    var phpcredentialsRequest = new XMLHttpRequest();
+    phpcredentialsRequest.onload = function() {
+        if (this.status === 200) {
+            var res = JSON.parse(this.responseText);
+            session.configuration = {
+                sdpSemantics: session.sdpSemantics,
+                iceServers: []
+            };
+
+            let phpIceServers = {
+                "username": res[0],
+                "credential": res[1],
+                urls: []
+            };
+            for (let i = 2; i < res.length; i++) {
+                phpIceServers['urls'].push(res[i]);
+            }
+            session.configuration.iceServers.push(phpIceServers);
+
+            if (session.ws === false) {
+                session.ws = null;
+                session.connect();
+            }
+        }
+    };
+    phpcredentialsRequest.open('GET', './turn-credentials.php', true);
+    phpcredentialsRequest.send();
+} catch (e) {
+    console.error(e);
+    errorlog("php-credentials script Failed");
+}
+```
+
+## Support
+
+For issues or questions:
+- Create an issue on the VDO.Ninja GitHub repository
+- Join the VDO.Ninja Discord community
+
+## References
+- [Coturn Documentation](https://github.com/coturn/coturn/wiki/turnserver)
+- [WebRTC Samples](https://webrtc.github.io/samples/)
+- [VDO.Ninja GitHub](https://github.com/steveseguin/vdo.ninja)

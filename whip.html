@@ -29,27 +29,27 @@
     <!-- Styles -->
     <link rel="stylesheet" href="./lineawesome/css/line-awesome.min.css" />
 	<style>
-html {
-    border: 0;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-}
+	html {
+		border: 0;
+		margin: 0;
+		padding: 0;
+		height: 100%;
+		width: 100%;
+	}
 
-body {
-    padding: 0;
-    min-height: 100vh;
-    width: 100%;
-    background: linear-gradient(to top, #363644, 50%, #151b29) fixed;
-    font-size: 2em;
-    font-family: Helvetica, Arial, sans-serif;
-    display: flex;
-    flex-flow: column;
-    margin: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
+	body {
+		padding: 0;
+		min-height: 100vh;
+		width: 100%;
+		background: linear-gradient(to top, #363644, 50%, #151b29) fixed;
+		font-size: 2em;
+		font-family: Helvetica, Arial, sans-serif;
+		display: flex;
+		flex-flow: column;
+		margin: 0;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
 
 	video {
 
@@ -67,7 +67,6 @@ body {
 		justify-content: center;
 		margin: 2em;
 		color:white;
-		transform:scale(120%);
 	}
 	a {
 		color:white;
@@ -146,8 +145,9 @@ body {
 		font-size: 16px;
 		align-self:center;
 		max-width: 100%;
-		width: 720px;
+		width: 1280px;
 		margin: auto auto;
+		padding: 20px 0;
 	}
 	label {
 		font: white;
@@ -202,7 +202,6 @@ body {
 		display: flex;
 		flex-direction: row;
 		flex-wrap: nowrap;
-		justify-content: center;
 		margin: 2em;
 	}
 		
@@ -297,7 +296,7 @@ body {
 		flex-wrap: nowrap;
 		flex-grow: 1;
 	}
-	@media only screen and (max-width: 699px) {
+	@media only screen and (max-width: 799px) {
 		.inputComboGrid {
 			display: grid;
 			padding: 0px 5px;
@@ -323,7 +322,259 @@ body {
 		height:0
 	}
 	
+	.tabs-container {
+	  position: sticky;
+	  top: 0;
+	  z-index: 100;
+	  background: rgba(16, 21, 32, 0.95);
+	  backdrop-filter: blur(10px);
+	  padding: 15px 0;
+	  margin: 20px 0 50px 0;
+	  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	  border-radius: 25px;
+	}
 
+	.section-tabs {
+	  display: flex;
+	  gap: 15px;
+	  max-width: 1200px;
+	  margin: 0 auto;
+	  padding: 20px;
+	  justify-content: space-between;
+	  font-size: 120%;
+	}
+	
+	@media only screen and (max-width: 1100px) {
+		.section-tabs {
+			padding: 10px !important;
+			font-size: 100%!important;
+		}
+	}
+	
+	@media only screen and (max-width: 900px) {
+		.section-tabs {
+			gap:3px!important;
+		}
+		
+		.section-tab {
+			padding:5px!important;
+		}
+	}
+	
+
+	.section-tab {
+	  padding: 24px;
+	  background: rgba(255, 255, 255, 0.05);
+	  border: 1px solid rgba(255, 255, 255, 0.1);
+	  border-radius: 8px;
+	  color: white;
+	  cursor: pointer;
+	  transition: all 0.2s ease;
+	  font-size: 1em;
+	  display: flex;
+	  align-items: center;
+	  gap: 8px;
+	}
+
+	.section-tab:hover {
+	  background: rgba(106, 171, 35, 0.2);
+	}
+
+	.section-tab.active {
+	  background: #6aab23;
+	  border-color: #6aab23;
+	}
+	
+	.section-card {
+		width:1000px;
+		max-width:100%;
+	}
+	.advanced {
+		margin-top:40px;
+	}
+	.usage-tip {
+	  background: rgba(106, 171, 35, 0.1);
+	  border-left: 4px solid #6aab23;
+	  padding: 15px;
+	  margin: 15px 0;
+	  border-radius: 0 8px 8px 0;
+	  font-size: 0.9em;
+	  color: #DDD;
+	}
+
+	.footer-content {
+	  margin-top: 40px;
+	  padding-top: 40px;
+	  border-top: 1px solid rgba(255, 255, 255, 0.1);
+	}
+	
+	.input-section {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.info-box {
+		background: rgba(0, 0, 0, 0.2);
+		border-radius: 10px;
+		padding: 20px;
+	}
+
+	.endpoint-info {
+		font-size: 1.1em;
+		color: #ccc;
+		margin-bottom: 15px;
+		padding-bottom: 15px;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	.endpoint-info code {
+		background: rgba(0, 0, 0, 0.3);
+		padding: 4px 8px;
+		border-radius: 4px;
+		color: #00F6FF;
+	}
+
+	.usage-notes {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.note {
+		display: flex;
+		align-items: start;
+		gap: 10px;
+		color: #fff;
+		font-size: 0.9em;
+	}
+
+	.note i {
+		color: #00F6FF;
+		font-size: 1.2em;
+		margin-top: 2px;
+	}
+
+	.troubleshooting {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		font-size: 0.9em;
+		color: #ccc;
+		padding: 10px;
+		background: rgba(255, 255, 255, 0.05);
+		border-radius: 6px;
+	}
+
+	.troubleshooting a {
+		color: #00F6FF;
+		text-decoration: none;
+	}
+
+	.troubleshooting a:hover {
+		text-decoration: underline;
+	}
+
+	.genbutton {
+		font-size: 14px;
+		font-weight: bold;
+		border: none;
+		background: #555;
+		display: flex;
+		border-radius: 10px;
+		box-shadow: 0 12px 15px -10px #444, 0 2px 0px #555;
+		color: white;
+		cursor: pointer;
+		box-sizing: border-box;
+		align-items: center;
+		padding: 0 1em;
+		min-width: 40px;
+		height: 40px;
+		justify-content: center;
+		transition: background 0.2s ease;
+	}
+
+	.genbutton:hover {
+		background: #666;
+	}
+	
+
+	.feature-note {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		color: #fff;
+		font-size: 0.9em;
+		padding: 10px;
+		background: rgba(145, 70, 255, 0.15);
+		border-radius: 6px;
+		margin-bottom: 20px;
+	}
+
+	.feature-note i {
+		color: #9146FF;
+		font-size: 1.2em;
+	}
+
+	.publishing-options h4 {
+		color: #00F6FF;
+		margin-bottom: 15px;
+		font-size: 1.1em;
+	}
+
+	.tool-card {
+		display: flex;
+		gap: 15px;
+		padding: 15px;
+		background: rgba(255, 255, 255, 0.05);
+		border-radius: 8px;
+		margin-bottom: 10px;
+		transition: transform 0.2s ease;
+	}
+
+	.tool-card:hover {
+		transform: translateX(5px);
+	}
+
+	.tool-card i {
+		font-size: 2em;
+		color: #00F6FF;
+		align-self: center;
+	}
+
+	.tool-info h5 {
+		color: #fff;
+		margin: 0 0 5px 0;
+		font-size: 1em;
+	}
+
+	.tool-info p {
+		color: #ccc;
+		font-size: 0.9em;
+		margin: 0 0 8px 0;
+	}
+
+	.tool-info a {
+		color: #00F6FF;
+		text-decoration: none;
+		font-size: 0.9em;
+		display: inline-block;
+	}
+
+	.tool-info a:hover {
+		text-decoration: underline;
+	}
+
+	@media (max-width: 768px) {
+		.tool-card {
+			flex-direction: column;
+			text-align: center;
+		}
+		
+		.tool-card i {
+			margin-bottom: 10px;
+		}
+	}
 	</style>
 </head>
 <body>
@@ -346,7 +597,7 @@ body {
 							<input type="password" id="changeText1a" class="inputfield changeText" placeholder="🗝️ Authentication Bearer Token (optional)" />
 							<div class="details">⚙️</div>
 						</div>
-						
+						<h3 class="advanced">Advanced options</h3>
 						<div class="inputComboGrid" id="advanced" style="margin: 10px 0px 10px 10px;">
 							<select style="border-radius:10px;margin-right:5px;width:unset!important;" class="changeText" id="whipoutaudiobitrate"  title="Which audio bitrate target would you prefer? 128-kbps is fine for music." >
 								<option value="0" selected>🎙️Default Audio Bitrate</option>
@@ -386,6 +637,7 @@ body {
 								<option value="vp9">🎦VP9</option>
 								<option value="vp8">🎦VP8</option>
 								<option value="h264">🎦H264</option>
+								<option id="h265codec" value="h265">🎦H265</option>
 							</select >
 							<select style="border-radius:10px;margin-right:5px;width:unset!important;" class="changeText" id="svcGroupFlag" title="Which scalable video coding do you want to use?" >
 								<option value="0" selected>🎦 SVC Off</option>
@@ -411,40 +663,109 @@ body {
 						</div>
 					</div>	
 				</div>
-				<br />
-				<div id="urlInput1a" class="urlInput" title="Put the link you want to load here">
+				<div id="urlInput2" class="urlInput">
+					<h3>Setup VDO.Ninja to be a WHIP-ingestion end-point (OBS → VDO)</h3>
 					
-					<h3>Publish a video from VDO.Ninja to your Twitch channel</h3>
-					
-					<div  class="inputCombo" id="inputCombo1t">
-						<label for="changeText">
-							<i class="las la-upload"></i>
-						</label>
-						<input type="password" id="changeText1t" autocomplete="changeText1twitcha"  class="inputfield changeText" placeholder="Enter your Twitch stream token here" />
-						<button  onclick="gohere1t();" class="gobutton" id="gobutton1t">GO</button>
-					</div>
-					<div class="hidden">
-						<div class="inputCombo" style="margin: 10px 0px 10px 10px;" autocomplete="changeText1twitchb"  title="If you want to have viewers of this VDO.Ninja link auto-load your Twitch stream">
-							<input type="text" class="inputfield changeText" placeholder="Twitch user name (optional)" />
-							<div class="details">📻</div>
+					<div class="input-section">
+						<div class="inputCombo" id="inputCombo2">
+							<label for="changeText">
+								<i class="las la-play"></i>
+							</label>
+							<input type="text" id="changeText2" class="inputfield changeText" 
+								placeholder="Create a unique stream token (alphanumeric, case-sensitive, max 50 chars)" />
+							<button onclick="gohere2();" class="gobutton" id="gobutton2">GO</button>
+							<button onclick="generateNewToken();" class="genbutton" title="Generate random token"><i class="las la-random"></i></button>
+						</div>
+						
+						<div class="info-box">
+							<div class="endpoint-info">
+								<i class="las la-link"></i> WHIP endpoint URL: <code>https://whip.vdo.ninja</code>
+							</div>
+							
+							<div class="usage-notes">
+								<div class="note">
+									<i class="las la-info-circle"></i>
+									<span>Your stream token must be unique. Only one person can publish to a token at a time.</span>
+								</div>
+								<div class="note">
+									<i class="las la-laptop-code"></i>
+									<span>For our recommend OBS WHIP encoding settings, for smooth playback, <a href='https://docs.vdo.ninja/guides/recommended-obs-whip-settings' target='_blank'>see this guide</a>.</span>
+								</div>
+								<div class="note">
+									<i class="las la-play-circle"></i>
+									<span>You have to first start VDO.Ninja (GO button) before starting your OBS stream.</span>
+								</div>
+								<div class="note">
+									<i class="las la-users"></i>
+									<span>Important: Only ONE viewer can connect directly to an OBS WHIP stream.</span>
+								</div>
+								<div class="note">
+									<i class="las la-broadcast-tower"></i>
+									<span>Need multiple viewers? Use <a href="https://meshcast.io" target="_blank">meshcast.io</a> or <a href='https://docs.vdo.ninja/guides/deploy-your-own-meshcast-like-service' target='_blank'>deploy your own MediaMTX server</a>.</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="troubleshooting">
+							<i class="las la-question-circle"></i>
+							<span>Can't publish WHIP via OBS outside your LAN?</span>
+							<a href="https://backup.vdo.ninja/OBS_VDO_Ninja.zip" target="_blank">Download our patched OBS version</a>
+							<a href='https://github.com/steveseguin/obs-studio/' target="_blank">[source]</a>
 						</div>
 					</div>
 				</div>
-				<br /><br /><br />
-				<div id="urlInput2"  class="urlInput"title="Put the WHIP token you want to listen for">
+				<div id="urlInput1a" class="urlInput">
+					<h3>Publish your camera or screen directly to Twitch channel using VDO.Ninja</h3>
 					
-					<h3>Setup VDO.Ninja to be a WHIP-ingestion end-point (ie: OBS -> VDO)</h3>
-					
-					<div class="inputCombo" id="inputCombo2">
-						<label for="changeText">
-						<i class="las la-play"></i>
-					</label>
-						<input type="text" id="changeText2" class="inputfield changeText" placeholder="Ingest WHIP token" />
-						<button  onclick="gohere2();"  class="gobutton" id="gobutton2">GO</button>
+					<div class="input-section">
+						<div class="inputCombo" id="inputCombo1t">
+							<label for="changeText">
+								<i class="las la-upload"></i>
+							</label>
+							<input type="password" id="changeText1t" autocomplete="changeText1twitcha" class="inputfield changeText" 
+								placeholder="Enter your Twitch stream token here" />
+							<button onclick="gohere1t();" class="gobutton" id="gobutton1t">GO</button>
+						</div>
+
+						<div class="info-box">
+							<div class="feature-note">
+								<i class="las la-bolt"></i>
+								<span>WHIP publishing to Twitch offers low-latency streaming with dynamic bitrate adaptation</span>
+							</div>
+
+							<div class="publishing-options">
+								<h4>Special Publishing Tools with Twitch support:</h4>
+								<div class="tool-card">
+									<i class="las la-chalkboard"></i>
+									<div class="tool-info">
+										<h5>Interactive Whiteboard</h5>
+										<p>Draw and annotate live on screen, perfect for tutorials or explanations</p>
+										<a href="https://vdo.ninja/alpha/whiteboard" target="_blank">Try Whiteboard →</a>
+									</div>
+								</div>
+
+								<div class="tool-card">
+									<i class="las la-video"></i>
+									<div class="tool-info">
+										<h5>IP Camera Publisher</h5>
+										<p>Stream MJPEG IP camera feeds with VDO.Ninja to Twitch or other platforms</p>
+										<a href="https://vdo.ninja/alpha/ipcam" target="_blank">Try IP Camera →</a>
+									</div>
+								</div>
+
+								<div class="tool-card">
+									<i class="las la-th-large"></i>
+									<div class="tool-info">
+										<h5>Multi-Guest Mixer</h5>
+										<p>Mix multiple VDO.Ninja guests into a single stream, all in your browser</p>
+										<a href="https://vdo.ninja/mixer" target="_blank">Try Mixer →</a>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-					<h3 style="text-align: center;color:#ccc;"><i>The WHIP endpoint for VDO.Ninja is <b>https://whip.vdo.ninja</b></i></h3>
 				</div>
-				
+
 				<div id="urlInput3"  class="urlInput"title="Put the link you want to play here">
 					
 					<h3>Play a remote video stream available via WHEP</h3>
@@ -460,6 +781,7 @@ body {
 						<input type="password" id="changeText3a" class="inputfield changeText" placeholder="🗝️ Authentication Bearer Token (optional)" />
 						<div class="details">⚙️</div>
 					</div>
+					<h3 class="advanced">Advanced options</h3>
 					<div class="inputComboGrid" id="advancedwhep" style="margin: 10px 0px 10px 10px;">
 						<select style="border-radius:10px;margin-right:5px;width:unset!important;" class="changeText" id="whepbuffer"  title="Adding a playback buffer can help reduce frame loss or jitter" >
 							<option value="0" selected>⌛No added playback buffer</option>
@@ -479,15 +801,12 @@ body {
 							<option value="0" selected>🔑 E2EE Off</option>
 							<option value="1">🔑 E2EE On</option>
 						</select >
-					</div>
-					<div class="inputComboGrid" id="advanced3" style="margin: 10px 0px 10px 10px;">
 						<select style="border-radius:10px;margin-right:5px;width:unset!important;" class="changeText" id="stereowhep"  title="Stereo is available only if auto-gain and noise-reduction is off." >
 							<option value="1" selected>🎙️Stereo</option>
 							<option value="0">🎙️Mono</option>
 						</select>
 					</div>
 				</div>
-				<br /><br />
 				<div id="urlInput4" class="urlInput" title="Start a VDO.Ninja stream, and then after, access it remotely via WHEP">
 					
 					<h3>Host a VDO.Ninja stream as a WHEP source</h3>
@@ -504,74 +823,95 @@ body {
 				</div>
 				
 				<div id="history" title="History of past links used. You can clear this history using the button to the left">
-					<h3 style='cursor:pointer;' onclick="resetHistory()">Clear History</h3>
+					
 					<label for="lastUrls" onclick="resetHistory()">
 						<i class="las la-history"></i>
 					</label>
+					<h3 style='cursor:pointer;' onclick="resetHistory()">Clear History</h3>
 				</div>
-				<br /><br /><br /><br /><br />
+				<br />
+				<!-- Main content container -->
 				<div id="moreinfo">
-					<h3 style='cursor:pointer;'>More information and options</h3>
-					For more WHIP/WHEP options, tools, services, and documentation, please see: <a href='https://docs.vdo.ninja/steves-helper-apps/whip-and-whep-tooling' target="_blank"><br /><br />
-					<b>https://docs.vdo.ninja/steves-helper-apps/whip-and-whep-tooling</b></a>
-					<br />
-					<h3 style='cursor:pointer;'>For community support</h3>
-					For support, join our <a href='https://discord.vdo.ninja' target="_blank">Discord server here</a>.
-					<br /><br />
+					<h1>More information and options</h1>
+					
+					<p>
+						For more WHIP/WHEP options, tools, services, and documentation, please see:
+						<a href="https://docs.vdo.ninja/steves-helper-apps/whip-and-whep-tooling" target="_blank">
+							https://docs.vdo.ninja/steves-helper-apps/whip-and-whep-tooling
+						</a>
+					</p>
+
+					<h3>For community support</h3>
+					<p>For support, join our <a href="https://discord.vdo.ninja" target="_blank">Discord server here</a>.</p>
+
 					<div id="additional-info">
-						<h2>About WHIP/WHEP and MediaMTX Integration</h2>
-						<p>WHIP (WebRTC-HTTP ingestion protocol) and WHEP (WebRTC-HTTP egress protocol) are standardized protocols for WebRTC streaming. This client utilizes VDO.Ninja as the WebRTC layer to provide a powerful and flexible streaming solution.</p>
-						
-						<h3>Using MediaMTX</h3>
-						<p>To easily configure this client for use with MediaMTX, you can use the <code>&mediamtx</code> parameter in the URL. Here's what you need to know:</p>
+						<h2>About WHIP/WHEP Integration Options</h2>
+						<p>There are three main ways to publish using WHIP from VDO.Ninja:</p>
 						<ul>
-							<li>Simply add <code>&mediamtx=domainname</code> to your URL to configure the client for MediaMTX.</li>
-							<li>The default port for MediaMTX is 8889. If you're using the default port, you don't need to specify it.</li>
-							<li>If you're using a non-standard port, include it like this: <code>&mediamtx=domainname.com:443</code></li>
-							<li>MediaMTX doesn't support <code>stereo=0</code>, so this setting is automatically removed if detected.</li>
+							<li><strong>MediaMTX self-hosted server:</strong> Add <code>&mediamtx=yourserver.com</code> to any VDO.Ninja URL</li>
+							<li><strong>Meshcast managed service:</strong> Add <code>&meshcast</code> to any VDO.Ninja URL</li>
+							<li><strong>Other WHIP/WHEP services:</strong> Using <code>&whipout</code>, which is what this page tends to use</li>
+						</ul>
+						<p>You can of course also playback videos into VDO.Ninja from WHIP/WHEP clients and servers.</p>
+
+						<h3>Using MediaMTX</h3>
+						<p>MediaMTX is a self-hosted SFU that supports WHIP/WHEP:</p>
+						<ul>
+							<li>Works with VDO.Ninja group rooms and other features, just like Meshcast</li>
+							<li>Custom port can be set, making port forwarding on a router easy</li>
+							<li>Ultilizing it with VDO.Ninja is as easy as using Meshcast: <code>&mediamtx=yourserver.com:port</code></li>
+							<li>Find setup instructions in our <a href="https://docs.vdo.ninja/guides/deploy-your-own-meshcast-like-service" target="_blank">MediaMTX guide</a></li>
 						</ul>
 
-						<h3>Important Notes</h3>
+						<h3>Using Meshcast.io</h3>
+						<p>Meshcast.io offers a managed WHIP/WHEP service:</p>
 						<ul>
-							<li>Ensure your MediaMTX server is properly configured and accessible.</li>
-							<li>For optimal performance, use a wired internet connection when streaming.</li>
-							<li>Be aware of your bandwidth limitations when configuring video and audio bitrates.</li>
-							<li>Some browsers may have limitations with certain codecs. If you experience issues, try switching to a different codec.</li>
+							<li>Free service with servers in US, Canada, and Europe</li>
+							<li>Just add <code>&meshcast</code> to any VDO.Ninja URL</li>
+							<li>No setup required - auto-connects to nearest server</li>
+							<li>Supports up to 100 viewers</li>
+							<li>Perfect for quick setups and small broadcasts</li>
+						</ul>
+						<p><small>Note: Meshcast.io service is provided on a best-effort basis.</small></p>
+
+						<h3>Direct WHIP/WHEP Publishing</h3>
+						<p>This page provides a simple client for direct WHIP/WHEP streaming:</p>
+						<ul>
+							<li>Easily tweak and change advanced WebRTC streaming settings</li>
+							<li>Publish from the VDO.Ninja mixer or whiteboard directly to Twitch or WHIP service</li>
+							<li>Peer-to-Peer WHIP playback allows for server-free OBS to OBS streaming</li>
+							<li>Host VDO.Ninja streams as WHEP sources or view WHEP sources</li>
 						</ul>
 
 						<h3>Troubleshooting</h3>
-						<p>If you encounter issues:</p>
+						<p>Common solutions for connection issues:</p>
 						<ul>
-							<li>Check your network connection and firewall settings.</li>
-							<li>Ensure your MediaMTX server is running and accessible.</li>
-							<li>Try using different browsers or updating your current browser.</li>
-							<li>Verify that your camera and microphone are properly connected and permitted in your browser settings.</li>
+							<li>Verify network and firewall settings</li>
+							<li>If publishing with OBS to VDO.Ninja, ensure a compatible OBS version is used.</li>
+							<li>Check MediaMTX server accessibility and SSL requirements</li>
+							<li>For H265 support, check <a href="https://vdo.ninja/h265" target="_blank">browser compatibility</a></li>
+							<li>WHIP is one to one, so publishing from OBS to VDO.Ninja directly, without an SFU, will only allow one viewer at a time</li>
 						</ul>
-
-						<p>For more detailed information on WHIP and WHEP, visit the <a href="https://www.ietf.org/archive/id/draft-ietf-wish-whip-01.html" target="_blank">IETF WHIP draft</a> and <a href="https://www.ietf.org/archive/id/draft-murillo-whep-00.html" target="_blank">IETF WHEP draft</a>.</p>
 					</div>
-					<br />
+
 					<div id="about-vdo-ninja">
 						<h2>About VDO.Ninja</h2>
-						<p>VDO.Ninja is a powerful, free, and open-source platform for live video production. It uses peer-to-peer technology to bring remote cameras into OBS or other studio software, allowing content creators to produce real-time live shows using remote media streams.</p>
-						<p>Key features of VDO.Ninja include:</p>
+						<p>VDO.Ninja is a free, open-source platform for live video production that supports multiple ways to integrate WHIP/WHEP streaming:</p>
 						<ul>
-							<li>High-quality, low-latency video streaming</li>
-							<li>Peer-to-peer technology for direct video transfer</li>
-							<li>Ability to turn smartphones into wireless webcams</li>
-							<li>Compatible with OBS and other studio software</li>
-							<li>Free to use with no account required</li>
+							<li>It's easy to switch from peer to peer to server-based broadcasting with MediaMTX and Meshcast</li>
+							<li>Direct WHIP/WHEP publishing capabilities lowers latency and costs</li>
+							<li>Group room functionality for multi-user broadcasts and stream management</li>
+							<li>Mobile device support, with browser-based and native app options</li>
 						</ul>
-						<p>VDO.Ninja is designed to be serverless, ensuring it can be offered for free while providing increased levels of security and privacy.</p>
 						
 						<h3>Open Source</h3>
-						<p>Both VDO.Ninja and this WHIP/WHEP client are open-source projects. You can find their source code and contribute to their development on GitHub:</p>
+						<p>Both VDO.Ninja and this WHIP/WHEP client are open-source:</p>
 						<ul>
 							<li>VDO.Ninja: <a href="https://github.com/steveseguin/vdoninja" target="_blank">https://github.com/steveseguin/vdoninja</a></li>
 							<li>WHIP/WHEP Client: <a href="https://github.com/steveseguin/vdo.ninja/blob/develop/whip.html" target="_blank">https://github.com/steveseguin/vdo.ninja/blob/develop/whip.html</a></li>
 						</ul>
-						<p>We encourage the community to contribute, report issues, and suggest improvements to help make these tools even better for everyone.</p>
 					</div>
+				</div>
 					<br /><br /><br /><br />
 				</div>
 				<br /><br /><br /><br />
@@ -977,6 +1317,18 @@ async function processCodecs(){
 	
 }
 if (codecs){
+
+	var h265found = false;
+	codecs.forEach(c =>{
+		if (c.mimeType.toLowerCase().includes("h265")){
+			h265found = true;
+		}
+	})
+	if (!h265found){
+		document.getElementById("h265codec").disabled = true;
+		document.getElementById("h265codec").title = "Not found on your system. See https://vdo.ninja/h265 for help on enabling.";
+	}
+	
 	var av1found = false;
 	codecs.forEach(c =>{
 		if (c.mimeType.toLowerCase().includes("av1")){
@@ -989,10 +1341,103 @@ if (codecs){
 	} else if (localStorage.getItem('codecGroupFlag')===null){
 		document.getElementById('codecGroupFlag').value = "av1";
 	}
+	
+	
+	
 	processCodecs();
 	
 }
+// Updated UI interactions
+function initializeUI() {
+  // Create tabs container
+  const tabsContainer = document.createElement('div');
+  tabsContainer.className = 'tabs-container';
+  
+  const tabsInner = document.createElement('div');
+  tabsInner.className = 'section-tabs';
+  
+  const tabs = [
+    { id: 'publish-tab', text: 'Publish Stream', icon: '🎥', target: 'urlInput1' },
+	{ id: 'obs-tab', text: ' OBS ➡️ VDO', icon: '', target: 'urlInput2' },
+	{ id: 'twitch-tab', text: 'VDO ➡️ Twitch ', icon: '', target: 'urlInput1a' },
+    { id: 'play-tab', text: 'Play Stream', icon: '📺', target: 'urlInput3' },
+    { id: 'host-tab', text: 'Host Stream', icon: '🌐', target: 'urlInput4' }
+  ];
 
+  tabs.forEach(tab => {
+    const tabElement = document.createElement('div');
+    tabElement.className = 'section-tab';
+    tabElement.innerHTML = `${tab.icon} ${tab.text}`;
+    tabElement.onclick = () => switchTab(tab.target);
+    tabsInner.appendChild(tabElement);
+  });
+
+  tabsContainer.appendChild(tabsInner);
+  document.querySelector('.container').insertBefore(tabsContainer, document.querySelector('.urlInput'));
+
+  // Setup sections
+  const sections = document.querySelectorAll('.urlInput');
+  sections.forEach(section => {
+    section.classList.add('section-card');
+   
+  });
+
+  // Initially show first section and hide others
+  sections.forEach((section, index) => {
+    section.style.display = index === 0 ? 'block' : 'none';
+  });
+  document.querySelector('.section-tab').classList.add('active');
+
+  // Add tips where needed
+  const obsSection = document.getElementById('urlInput2');
+  if (obsSection) {
+    const tip = document.createElement('div');
+    tip.className = 'usage-tip';
+    tip.innerHTML = '💡 Copy this endpoint URL into OBS: <strong>https://whip.vdo.ninja</strong>   ..and don\'t forget to also copy over your stream token.';
+    obsSection.querySelector('.inputCombo').after(tip);
+  }
+}
+
+function switchTab(targetId) {
+  document.querySelectorAll('.urlInput').forEach(section => {
+    section.style.display = section.id === targetId ? 'block' : 'none';
+  });
+  
+  document.querySelectorAll('.section-tab').forEach((tab, index) => {
+    tab.classList.toggle('active', index === Array.from(document.querySelectorAll('.urlInput'))
+      .findIndex(section => section.id === targetId));
+  });
+}
+
+function toggleAdvanced(section, toggle) {
+  const isHidden = !section.classList.contains('visible');
+  section.classList.toggle('visible');
+  toggle.innerHTML = isHidden ? '⚙️ Hide Advanced Options' : '⚙️ Advanced Options';
+}
+
+function generateStreamID(length = 7) {
+    var text = "";
+    var possible = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789";
+    for (var i = 0; i < length; i++) {
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    try {
+        text = text.replaceAll("AD", "vDAv");
+        text = text.replaceAll("Ad", "vdAv");
+        text = text.replaceAll("ad", "vdav");
+        text = text.replaceAll("aD", "vDav");
+    } catch (e) {
+        console.error(e);
+    }
+    return text;
+}
+
+function generateNewToken() {
+    document.getElementById('changeText2').value = generateStreamID();
+}
+
+// Initialize UI when page loads
+document.addEventListener('DOMContentLoaded', initializeUI);
 </script>
 </body>
 </html>

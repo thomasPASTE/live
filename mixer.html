@@ -1337,7 +1337,11 @@
 	
 	document.documentElement.style.setProperty('--iframe-width', ww);
 	document.documentElement.style.setProperty('--iframe-height',hh);
-		
+	
+	if (urlParams.has("transparent")) {
+	  document.querySelector("#canvas").style.backgroundColor = "transparent";
+	  document.body.style.backgroundColor = "transparent";
+	}
 	
 	var roomname = false;
 	if (urlParams.has("room") || urlParams.has("r") ||urlParams.has("dir") || urlParams.has("director")){
@@ -1572,6 +1576,11 @@
 		$( "#containermenu" ).sortable({
 			stop: function( event, ui ) {saveSession();},
 			distance: 20
+		});
+		
+		 $("#containermenu").on('wheel', function(e) {
+			e.preventDefault();
+			$(this).scrollLeft($(this).scrollLeft() + e.originalEvent.deltaY);
 		});
 	});
 	
@@ -2542,7 +2551,10 @@
 	function loadIframe(){
 		if (iframe){return;}
 		iframe = document.createElement("iframe");
-		iframe.allow = "autoplay;camera;microphone;fullscreen;picture-in-picture;display-capture;";
+		iframe.allow = "autoplay;camera;microphone;fullscreen;picture-in-picture;display-capture;screen-wake-lock;accelerometer;midi;geolocation;gyroscope;";
+		iframe.setAttribute("allowtransparency", "true");
+		iframe.setAttribute("crossorigin", "anonymous");
+		iframe.setAttribute("credentialless", "true");
 		iframe.id = "vdoninja";
 		
 		roomname = sanitizeRoomName(roomname);

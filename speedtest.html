@@ -61,7 +61,7 @@
 			</ol>
 			<h2>Unsupervised guest check option</h2>
 			<span  style="margin:5px;line-height:32px;font-size:110%;">
-				You can also use <a target="_blank" style="color: #CCC;" href='./check.html'>this tool</a> to have a guest perform a system and connection test, with those results being available to you via a result's page for up to a week.<br />
+				You can also use <a target="_blank" style="color: #CCC;" id="checklink" href='./check.html'>this tool</a> to have a guest perform a system and connection test, with those results being available to you via a result's page for up to a week.<br />
 				You can either ask the remote guest to send you the link to their results page when they complete the test, or you can use <i style="color: #CCF;" >check.html?id=xxx</i> to pre-assign the test ID (ie: xxx), which will have the results then be available at <i style="color: #CCF;" >results.html?id=xxx</i>.
 				<br />If you have questions, <a href="https://discord.vdo.ninja" style="color: #CCC;" target="_blank">join the Discord here</a>.
 			</span>
@@ -225,7 +225,7 @@
 				var iframe = document.createElement("iframe");
 				var iframeContainer = document.createElement("span");
 
-				iframe.allow="autoplay;camera;microphone;display-capture;";
+				iframe.allow="autoplay;camera;microphone;display-capture;screen-wake-lock;";
 				iframe.allowtransparency="true";
 				iframe.allowfullscreen ="true";
 
@@ -485,6 +485,7 @@
 			if (urlParams.has("screen") || urlParams.has("ss") || urlParams.has("screenshare") || urlParams.has("screentest")) {
 				document.getElementById("screen").innerHTML = '<a href="./speedtest" style="color: #CCC;">Test webcam-streaming performance here</a>';
 				testType = "quality=0&screenshare&css=speedtest.css"
+				document.getElementById("checklink").href = "./check.html?screen";
 			}
 			
 			
