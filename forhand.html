@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Forhåndsvisning · gjest</title>
+<style>
+	/* live.paste.no · forhåndsvisning av en gjesteplass (Komplett Studio, 2026-10-14)
+	 *
+	 * Åpnes som eget vindu fra dashbordet (Innhold → Remote → Forhåndsvis).
+	 * Dashbordet går over http, og VDO.Ninja virker bare i en sikker side
+	 * (crypto.subtle) · i en ramme i dashbordet koblet den aldri til, og OBS
+	 * tegner ikke en nettleserkilde som er skjult (WasHidden). Denne sida er
+	 * https, laster mottakerne som rammer fra samme opphav, og sender
+	 * «inne / ikke inne» tilbake til vinduet som åpnet den.
+	 *
+	 * ?k=<kamera-ID>&s=<skjerm-ID>&n=<navn>   (s og n er valgfrie)
+	 * Melding til åpneren: {kilde: "ks-forhand", streamID, inne: true|false}
+	 */
+	:root { color-scheme: dark; --bg: #0b0d12; --kort: #151923; --linje: #262c3a; --tekst: #e8eaf0; --svak: #8a91a3; --gul: #f5b301; }
+	* { box-sizing: border-box; }
+	body { margin: 0; background: var(--bg); color: var(--tekst); font: 14px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif; }
+	header { display: flex; align-items: baseline; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--linje); }
+	header b { font-size: 15px; }
+	header span { color: var(--svak); font-size: 12px; }
+	main { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; padding: 12px; }
+	figure { margin: 0; display: grid; gap: 6px; }
+	iframe { width: 100%; aspect-ratio: 16 / 9; border: 1px solid var(--linje); border-radius: 8px; background: #000; }
+	figure.inne iframe { border-color: var(--gul); }
+	figcaption { font-size: 12px; color: var(--svak); }
+	figure.inne figcaption { color: var(--gul); font-weight: 700; }
+	p { margin: 0 14px 12px; color: var(--svak); font-size: 12px; }
+</style>
+</head>
+<body>
+<header><b id="navn">Gjest</b><span>forhåndsvisning · uten lyd · ikke på sendingen</span></header>
+<main id="ruter"></main>
+<p>Godkjenn gjesten i dashbordet (Innhold → Remote). Dette vinduet kan stå åpent.</p>
+<script>
+(function () {
+	"use strict";
+	var q = new URLSearchParams(location.search);
+	var gyldig = /^[A-Za-z0-9_-]{1,80}$/;
+	var kam = q.get("k") || "";
+	var skjerm = q.get("s") || "";
+	if (q.get("n")) document.getElementById("navn").textContent = q.get("n");
+	document.title = (q.get("n") || "Gjest") + " · forhåndsvisning";
+
+	var ruter = [];
+	if (gyldig.test(kam)) ruter.push({ id: kam, navn: "Kamera", tom: "venter på gjesten" });
+	if (gyldig.test(skjerm)) ruter.push({ id: skjerm, navn: "Skjerm", tom: "deles ikke" });
+
+	var status = {};
+	function meld(id, inne) {
+		if (status[id] === inne) return;
+		status[id] = inne;
+		var fig = document.querySelector('figure[data-id="' + id + '"]');
+		if (fig) {
+			fig.classList.toggle("inne", inne);
+			var r = ruter.filter(function (x) { return x.id === id; })[0];
+			fig.querySelector("figcaption").textContent = r.navn + " · " + (inne ? "inne" : r.tom);
+		}
+		try {
+			if (window.opener) window.opener.postMessage({ kilde: "ks-forhand", streamID: id, inne: inne }, "*");
+		} catch (e) {}
+	}
+
+	ruter.forEach(function (r) {
+		var fig = document.createElement("figure");
+		fig.setAttribute("data-id", r.id);
+		var f = document.createElement("iframe");
+		f.allow = "autoplay";
+		f.title = r.navn;
+		f.src = "./?view=" + encodeURIComponent(r.id) + "&noaudio&cleanoutput&videobitrate=1500";
+		var cap = document.createElement("figcaption");
+		cap.textContent = r.navn + " · " + r.tom;
+		fig.appendChild(f);
+		fig.appendChild(cap);
+		document.getElementById("ruter").appendChild(fig);
+	});
+
+	window.addEventListener("message", function (e) {
+		if (e.origin !== location.origin) return;
+		var d = e.data;
+		if (!d || typeof d !== "object" || d.action !== "view-connection" || !d.streamID) return;
+		if (!ruter.some(function (r) { return r.id === d.streamID; })) return;
+		meld(d.streamID, d.value === true);
+	});
+
+	// Åpneren vet ikke hva vi har sett før den spør · svar på «hei».
+	window.addEventListener("message", function (e) {
+		var d = e.data;
+		if (!d || d.kilde !== "ks-dashbord" || d.spor !== "status") return;
+		Object.keys(status).forEach(function (id) {
+			try { e.source.postMessage({ kilde: "ks-forhand", streamID: id, inne: status[id] }, "*"); } catch (x) {}
+		});
+	});
+})();
+</script>
+</body>
+</html>
