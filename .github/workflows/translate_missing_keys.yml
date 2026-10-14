@@ -12,9 +12,9 @@ on:
         required: true
         default: "50"
       models:
-        description: "Comma-separated OpenCode Zen model fallback chain"
+        description: "Model chain: auto for current free models then inexpensive Go fallbacks"
         required: true
-        default: "deepseek-v4-flash-free,nemotron-3-super-free,big-pickle,minimax-m2.7"
+        default: "auto"
       dry_run:
         description: "Run without writing translation files"
         required: true
@@ -37,10 +37,10 @@ jobs:
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
 
       - name: Set up Node
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: "20"
 
@@ -48,7 +48,7 @@ jobs:
         env:
           OC_API_KEY: ${{ secrets.OC_API_KEY }}
           TRANSLATION_API_PROVIDER: opencode
-          TRANSLATION_API_URL: https://opencode.ai/zen/v1/chat/completions
+          TRANSLATION_API_URL: https://opencode.ai/zen/go/v1/chat/completions
           TRANSLATION_MODELS: ${{ inputs.models }}
           TARGET_LANGUAGES: ${{ inputs.target_languages }}
           MAX_TRANSLATION_KEYS: ${{ inputs.max_keys }}
@@ -65,7 +65,7 @@ jobs:
           delete-branch: true
           title: "[VDONinja Bot] Generated missing translations"
           body: |
-            Generated missing translation keys using OpenCode Zen.
+            Generated missing translation keys using OpenCode (free models, then Go).
 
             - Model chain: `${{ inputs.models }}`
             - Target languages: `${{ inputs.target_languages }}`

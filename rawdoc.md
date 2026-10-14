@@ -4177,7 +4177,7 @@ https://vdo.ninja/?view=YbFmisR&poster=./media/bg_sample.webp&hideplaybutton
 
 [and-poster.md](and-poster.md)
 ---
-description: Includes streams that do not exist in the room
+description: Adds stream IDs within the viewer's room scope
 ---
 
 # &include
@@ -4188,13 +4188,20 @@ Viewer-Side Option! ([`&scene`](../view-parameters/scene.md), [`&room`](../../ge
 
 Example: `&include=StreamID`
 
-| Value       | Description                                                         |
-| ----------- | ------------------------------------------------------------------- |
-| (stream ID) | stream ID of a publisher outside of a room with a matching password |
+| Value | Description |
+| --- | --- |
+| (stream ID) | Publisher stream ID within the viewer's room scope, with a matching password |
 
 ## Details
 
-`&include`, which is like [`&view`](../view-parameters/view.md), except it's for including streams that do not exist in the room you are in, assuming those streams are not in another room and have matching passwords. So, useful for adding basic push-streams that you might want to be in multiple rooms at the same time, but not actually be locked to any room. ([`&view`](../view-parameters/view.md), conversely, is pretty exclusive; that or nothing.)
+`&include` adds stream IDs to the viewer's selection, including alongside [`&view`](../view-parameters/view.md). It does not override room isolation.
+
+* In a room, requested stream IDs resolve only to publishers in that same room. `&include` does not import standalone publishers or publishers from another room.
+* Outside a room, `&include` can select additional standalone publishers with a matching password.
+
+Matching stream IDs or passwords do not merge these scopes. Room isolation is intentional: common IDs such as `GUEST` or `TEST` must not cause an unrelated publisher's video to appear in a room.
+
+Do not use `&include` to distribute one standalone publisher to guests in multiple rooms. A connection that happens to work because it was established before joining a room is not a supported way to bypass this restriction.
 
 ## Related
 
@@ -4349,7 +4356,7 @@ Mixer/Scene Parameters are viewer side options. You can add them to guest's URLs
 
 You have to add them to [`&scene`](../view-parameters/scene.md) or [`&room`](../../general-settings/room.md) or [`&view`](../view-parameters/view.md) URLs to change the behaviour of the Video Mixer.
 
-<table><thead><tr><th width="150">Parameter</th><th>Explanation</th></tr></thead><tbody><tr><td><a href="and-solo.md"><code>&#x26;solo</code></a></td><td>Similar to <a href="../view-parameters/scene.md"><code>&#x26;scene</code></a>, but tells the system to be a solo-link</td></tr><tr><td><a href="../view-parameters/view.md"><code>&#x26;view</code></a></td><td>Defines the stream(s) you are receiving, by their stream IDs</td></tr><tr><td><a href="and-include.md"><code>&#x26;include</code></a></td><td>Includes streams that do not exist in the room</td></tr><tr><td><a href="../view-parameters/and-exclude.md"><code>&#x26;exclude</code></a></td><td>Same concept as <a href="../view-parameters/view.md"><code>&#x26;view</code></a>, except does the opposite</td></tr><tr><td><a href="and-layout.md"><code>&#x26;layout</code></a></td><td>Shows the guest a return feed of the current mixer layout when using the <a href="../../steves-helper-apps/mixer-app.md">Mixer App</a></td></tr><tr><td><a href="../view-parameters/activespeaker.md"><code>&#x26;activespeaker</code></a></td><td>Auto-hides remote guests videos when added, if those guests are not speaking actively</td></tr><tr><td><a href="../../source-settings/order.md"><code>&#x26;order</code></a></td><td>The order priority of a source video when added to the video mixer</td></tr><tr><td><a href="../../newly-added-parameters/and-slots.md"><code>&#x26;slots</code></a></td><td>Will force the auto-mixer to have that number of slots, even if there are more or less videos available to fill them</td></tr><tr><td><a href="and-fakeguests.md"><code>&#x26;fakeguests</code></a></td><td>Creates simulated guest videos</td></tr><tr><td><a href="../view-parameters/randomize.md"><code>&#x26;randomize</code></a></td><td>Random video loading order</td></tr><tr><td><a href="../view-parameters/cover.md"><code>&#x26;cover</code></a></td><td>Has the videos fully "cover" their assigned areas, even if it means cropping the video</td></tr><tr><td><a href="../../newly-added-parameters/and-43.md"><code>&#x26;43</code></a></td><td>Optimizes the video mixer for 4:3 videos</td></tr><tr><td><a href="../view-parameters/and-portrait.md"><code>&#x26;portrait</code></a></td><td>Optimizes the video mixer for 9:16 videos</td></tr><tr><td><a href="../../newly-added-parameters/and-square.md"><code>&#x26;square</code></a></td><td>Optimizes the video mixer for 1:1 videos</td></tr><tr><td><a href="and-forceviewerlandscape.md"><code>&#x26;forceviewerlandscape</code></a>*</td><td>Keeps all incoming videos oriented (rotated) so that the aspect ratio is always above 1</td></tr><tr><td><a href="../view-parameters/animated.md"><code>&#x26;animated</code></a></td><td>Videos in a group scene will slide around the screen when being re-arranged</td></tr><tr><td><a href="../view-parameters/manual.md"><code>&#x26;manual</code></a></td><td>Disables the auto-mixer, allowing for a custom mixer to be used</td></tr><tr><td><a href="and-locked.md"><code>&#x26;locked</code></a></td><td>Will force a the VDO.Ninja's mixer output keep the mixed render contained to a specific aspect-ratio, regardless of the browser's window size</td></tr><tr><td><a href="and-poster.md"><code>&#x26;poster</code></a></td><td>Lets you specify a poster image for videos that have not yet started playing</td></tr><tr><td><a href="and-hideplaybutton.md"><code>&#x26;hideplaybutton</code></a></td><td>Will hide the default big play button that overlays a video when auto play is not allowed</td></tr><tr><td><a href="and-motiondetection-alpha.md"><code>&#x26;motiondetection</code></a>*</td><td>Does a few things when it detects motion in a video</td></tr></tbody></table>
+<table><thead><tr><th width="150">Parameter</th><th>Explanation</th></tr></thead><tbody><tr><td><a href="and-solo.md"><code>&#x26;solo</code></a></td><td>Similar to <a href="../view-parameters/scene.md"><code>&#x26;scene</code></a>, but tells the system to be a solo-link</td></tr><tr><td><a href="../view-parameters/view.md"><code>&#x26;view</code></a></td><td>Defines the stream(s) you are receiving, by their stream IDs</td></tr><tr><td><a href="and-include.md"><code>&#x26;include</code></a></td><td>Adds stream IDs within the viewer's room scope; does not import streams from outside the room</td></tr><tr><td><a href="../view-parameters/and-exclude.md"><code>&#x26;exclude</code></a></td><td>Same concept as <a href="../view-parameters/view.md"><code>&#x26;view</code></a>, except does the opposite</td></tr><tr><td><a href="and-layout.md"><code>&#x26;layout</code></a></td><td>Shows the guest a return feed of the current mixer layout when using the <a href="../../steves-helper-apps/mixer-app.md">Mixer App</a></td></tr><tr><td><a href="../view-parameters/activespeaker.md"><code>&#x26;activespeaker</code></a></td><td>Auto-hides remote guests videos when added, if those guests are not speaking actively</td></tr><tr><td><a href="../../source-settings/order.md"><code>&#x26;order</code></a></td><td>The order priority of a source video when added to the video mixer</td></tr><tr><td><a href="../../newly-added-parameters/and-slots.md"><code>&#x26;slots</code></a></td><td>Will force the auto-mixer to have that number of slots, even if there are more or less videos available to fill them</td></tr><tr><td><a href="and-fakeguests.md"><code>&#x26;fakeguests</code></a></td><td>Creates simulated guest videos</td></tr><tr><td><a href="../view-parameters/randomize.md"><code>&#x26;randomize</code></a></td><td>Random video loading order</td></tr><tr><td><a href="../view-parameters/cover.md"><code>&#x26;cover</code></a></td><td>Has the videos fully "cover" their assigned areas, even if it means cropping the video</td></tr><tr><td><a href="../../newly-added-parameters/and-43.md"><code>&#x26;43</code></a></td><td>Optimizes the video mixer for 4:3 videos</td></tr><tr><td><a href="../view-parameters/and-portrait.md"><code>&#x26;portrait</code></a></td><td>Optimizes the video mixer for 9:16 videos</td></tr><tr><td><a href="../../newly-added-parameters/and-square.md"><code>&#x26;square</code></a></td><td>Optimizes the video mixer for 1:1 videos</td></tr><tr><td><a href="and-forceviewerlandscape.md"><code>&#x26;forceviewerlandscape</code></a>*</td><td>Keeps all incoming videos oriented (rotated) so that the aspect ratio is always above 1</td></tr><tr><td><a href="../view-parameters/animated.md"><code>&#x26;animated</code></a></td><td>Videos in a group scene will slide around the screen when being re-arranged</td></tr><tr><td><a href="../view-parameters/manual.md"><code>&#x26;manual</code></a></td><td>Disables the auto-mixer, allowing for a custom mixer to be used</td></tr><tr><td><a href="and-locked.md"><code>&#x26;locked</code></a></td><td>Will force a the VDO.Ninja's mixer output keep the mixed render contained to a specific aspect-ratio, regardless of the browser's window size</td></tr><tr><td><a href="and-poster.md"><code>&#x26;poster</code></a></td><td>Lets you specify a poster image for videos that have not yet started playing</td></tr><tr><td><a href="and-hideplaybutton.md"><code>&#x26;hideplaybutton</code></a></td><td>Will hide the default big play button that overlays a video when auto play is not allowed</td></tr><tr><td><a href="and-motiondetection-alpha.md"><code>&#x26;motiondetection</code></a>*</td><td>Does a few things when it detects motion in a video</td></tr></tbody></table>
 
 \*NEW IN VERSION 24
 
@@ -5009,11 +5016,11 @@ Sender-Side Option / Director Option! ([`&push`](../../source-settings/push.md),
 
 Example: `&recordcodec=h264`
 
-<table><thead><tr><th width="139">Value</th><th>Description</th></tr></thead><tbody><tr><td><code>h264</code></td><td>request the h264 codec </td></tr><tr><td><code>vp8</code></td><td>request the VP8 codec </td></tr><tr><td><code>vp9</code></td><td>request the VP9 codec</td></tr><tr><td><code>av1</code></td><td>request the AV1 codec</td></tr></tbody></table>
+<table><thead><tr><th width="139">Value</th><th>Description</th></tr></thead><tbody><tr><td><code>h264</code></td><td>request the h264 codec </td></tr><tr><td><code>vp8</code></td><td>request the VP8 codec </td></tr><tr><td><code>vp9</code></td><td>request the VP9 codec</td></tr><tr><td><code>av1</code></td><td>request the AV1 codec</td></tr><tr><td><code>mp4</code></td><td>request the MP4 container with browser-selected codecs</td></tr></tbody></table>
 
 ## Details
 
-Adding `&recordcodec` to a source or director link lets you set the video recording codec (saving to disk mode; aka [`&record`](and-record.md)). The container format is still WebM, and not all codecs are going to be supported, but things will fail back to vp8 if not supported. Main reason for this is because vp8 on chrome for android kinda stinks, so at least you have an option to tinker with things now.
+Adding `&recordcodec` to a source or director link sets the video recording codec (saving to disk with [`&record`](and-record.md)). Values such as `vp8` and `h264` request WebM; `mp4` requests an MP4 file with browser-selected codecs. Unsupported choices fall back to a format the browser supports. The MP4 option does not override PCM or audio-only recording.
 
 As a guest or source side don't forget to add [`&record`](and-record.md) to the URL to get the record button.
 
@@ -12553,11 +12560,11 @@ When dealing with ICE (Interactive Connectivity Establishment) candidates, you m
    * Srflx candidates are used to traverse NATs and allow the devices on both sides to find a route to communicate through the NAT.
    * Srflx is the most common candidate type seen when making a connection with another remote peer on the Internet, via VDO.Ninja.
 2. **prflx (Peer Reflexive)**:
-   * Peer reflexive candidates are also a result of communication with a STUN server, but unlike server reflexive candidates, they represent the reflexive address of the remote peer, not the local device. In other words, they are the public IP and port of the other side, as observed by the STUN server.
+   * Peer reflexive candidates are discovered when the peers test connections to each other and find an address that was not already known.
    * Prflx candidates can be helpful in situations where a WebRTC peer wants to communicate with another peer, and it needs to discover the public address of that peer to establish direct communication.
    * Prflx are not common among VDO.Ninja connections, but may be seen when tethering, using a symmetrical firewall, or other non-common networking setups.
 
-In summary, srflx and prflx candidates both involve the use of STUN servers to discover reflexive addresses, but srflx represents the public address of the local device (behind NAT), while prflx represents the public address of the remote peer. These types of candidates are crucial for WebRTC communication because they help establish peer-to-peer connections across NAT devices and firewalls.
+Both types help peers connect across NATs and firewalls: srflx addresses are learned from a STUN server, while prflx addresses are learned during connection checks between peers.
 
 ## Related
 
@@ -12589,11 +12596,17 @@ General Option! ([`&push`](../source-settings/push.md), [`&room`](room.md), [`&v
 
 Example: `&turn=steve;setupYourOwnPlease;turn:turn.vdo.ninja:443`
 
+Multiple TURN servers can be provided by repeating the parameter:
+
+`&turn=user;password;turn:turn1.example.com:3478?transport=udp&turn=user;password;turn:turn2.example.com:443?transport=tcp`
+
 <table><thead><tr><th width="283">Value</th><th>Description</th></tr></thead><tbody><tr><td>(user;pwd;turnserveraddress)</td><td>Set this TURN server to turnserveraddress with username user and password pwd</td></tr><tr><td><code>false</code> | <code>off</code></td><td>Disable the use of the TURN servers</td></tr></tbody></table>
 
 ## Details
 
 Several TURN servers are provided by Steve for free, for now, and these are automatically selected based on your geographic location. You may wish to use your own privately hosted TURN server instead though, and the `&turn` is one flexible way to select it.
+
+When `&turn` is repeated, each custom server is added to the WebRTC ICE server configuration in URL order. This allows applications to provide fallback servers or multiple transports.
 
 ### Locations
 
@@ -12620,7 +12633,7 @@ Using a TURN server can also hide your IP address from other peers. You will nee
 
 [https://vdo.ninja/speedtest](https://vdo.ninja/speedtest) performs a connection test using the TURN server. It will select the closest public TURN server to you. At peak hours, these TURN servers might have lower performance compared to at off-peak hours, so consider hosting your own TURN server if absolute maximum performance is needed.
 
-You can check to see if you are using the TURN server by checking the connection stats window (`Left-Click` + `CTRL` while viewing a video. In this stats display, "Relay" implies connected to a TURN server. HOST implies connected via a LAN. SRFLX/PRFLX implies connected directly via [STUN](stun.md).
+To check the connection type, `CTRL` + `Left-Click` a video to open its stats. RELAY means a TURN server is carrying the stream. HOST usually means a LAN or direct public IP connection, without a relay. SRFLX/PRFLX usually means a direct connection across NAT; see [STUN](stun.md).
 
 ### Installing your own TURN server
 
@@ -14928,7 +14941,7 @@ You can also right-click and record any video within VDO.Ninja.
 
 Depending on the type of video, and whether its local or remote, recording the video with this method may use up extra resources from the publisher's computer, including CPU and bandwidth.
 
-Another issue is the format saved is WebM, which sometimes will need post-processing to make it compatible with many popular video editors. If the browser crashes, that also may cause the video recording to become lost, so it might not be the most reliable option.
+Recordings usually save as WebM; `&recordcodec=mp4` requests MP4 where supported. WebM files may need conversion for some video editors. A browser crash can lose an unfinished recording.
 
 That said, this is an easy option and available for free within VDO.Ninja.
 
@@ -20530,7 +20543,7 @@ Sender-Side Option! ([`&push`](push.md))
 
 Example: `&effects=7` or `&effects=zoom`
 
-<table><thead><tr><th width="227">Value</th><th>Description</th></tr></thead><tbody><tr><td>(no value given)</td><td>Shows a "Digital Video Effects" panel when setting up devices</td></tr><tr><td><code>0</code> | <code>false</code> | <code>off</code></td><td>Disables effects</td></tr><tr><td><code>1</code> | <code>facetracking</code></td><td>Face tracker</td></tr><tr><td><code>-1</code></td><td>Flip image</td></tr><tr><td><code>2</code></td><td>Mirror image</td></tr><tr><td><code>-2</code></td><td>Flip + mirror image</td></tr><tr><td><code>3</code></td><td>Background blur</td></tr><tr><td><code>4</code></td><td>Virtual Greenscreen</td></tr><tr><td><code>5</code></td><td>Background replacement</td></tr><tr><td><code>6</code></td><td>Avatar</td></tr><tr><td><code>7</code> | <code>zoom</code></td><td>Zoom</td></tr><tr><td><code>8</code></td><td><a data-mention href="effects.md#and-effects-8">#and-effects-8</a></td></tr><tr><td><code>9</code></td><td>Face tracking</td></tr><tr><td><code>10</code></td><td>Face tracking</td></tr><tr><td><code>11</code> | <code>anon</code></td><td>Anonymous face mask</td></tr><tr><td><code>13</code></td><td>New experimental background blur effect; it's not supported by most browsers/systems and its in origin trial</td></tr></tbody></table>
+<table><thead><tr><th width="227">Value</th><th>Description</th></tr></thead><tbody><tr><td>(no value given)</td><td>Shows a "Digital Video Effects" panel when setting up devices</td></tr><tr><td><code>0</code> | <code>false</code> | <code>off</code></td><td>Disables effects</td></tr><tr><td><code>1</code> | <code>facetracking</code></td><td>Face tracker (legacy native FaceDetector auto-crop)</td></tr><tr><td><code>facecrop</code> | <code>autofacecrop</code></td><td>Auto face crop with native FaceDetector plus MediaPipe fallback</td></tr><tr><td><code>-1</code></td><td>Flip image</td></tr><tr><td><code>2</code></td><td>Mirror image</td></tr><tr><td><code>-2</code></td><td>Flip + mirror image</td></tr><tr><td><code>3</code></td><td>Background blur</td></tr><tr><td><code>4</code></td><td>Virtual Greenscreen</td></tr><tr><td><code>5</code></td><td>Background replacement</td></tr><tr><td><code>6</code></td><td>Face mesh overlay with bundled MediaPipe FaceLandmarker</td></tr><tr><td><code>7</code> | <code>zoom</code></td><td>Zoom</td></tr><tr><td><code>8</code></td><td><a data-mention href="effects.md#and-effects-8">#and-effects-8</a></td></tr><tr><td><code>9</code></td><td>Legacy Jeeliz face-box sample effect</td></tr><tr><td><code>10</code></td><td>Legacy dog ears and nose alias</td></tr><tr><td><code>11</code> | <code>anon</code></td><td>Anonymous face mask</td></tr><tr><td><code>13</code></td><td>New experimental background blur effect; it's not supported by most browsers/systems and its in origin trial</td></tr></tbody></table>
 
 ## Details
 
@@ -20556,6 +20569,18 @@ Please do enable Webassembly-SIMD support under `chrome://flags/` if you'd like 
 
 `&effects=1` requires the use of the Chromium experimental face detection API, as I'm using the built-in browser face-tracking model for this. You can enable the API flag here: `chrome://flags/#enable-experimental-web-platform-features`
 My hope is that this feature will eventually be enabled by default within Chromium, as loading a large ML model to do face detection otherwise is a bit heavy; you may need to enable this within the OBS CLI if wishing to use it there?
+
+### `&effects=facecrop`
+
+`&effects=facecrop`, `&autofacecrop`, and `&facecrop` enable the newer auto face crop effect. It keeps the sender's face framed by cropping and panning through the existing canvas effects pipeline. It first tries the browser's native `FaceDetector` API and falls back to the bundled MediaPipe face detector model when available. Existing `&facetracker`, `&facetracking`, and `&effects=1` links keep their original behavior.
+
+### `&effects=6`
+
+`&effects=6` and `&facemesh` render a face mesh overlay using the bundled MediaPipe FaceLandmarker model. The older TensorFlow.js face mesh path can still be requested with `&legacyfacemesh` or `&tfjsfacemesh`.
+
+### Legacy face effects
+
+`&effects=9` is a legacy Jeeliz sample effect that draws a face-tracking box. `&effects=10` is a legacy alias for the dog ears and nose effect. These values are kept for backwards compatibility.
 
 ### `&effects=8`
 
@@ -21078,7 +21103,7 @@ General Option! ([`&push`](push.md), [`&room`](../general-settings/room.md), [`&
 
 ## Details
 
-The enhanced security parameter will auto-disconnect you from the handshake-server after the first peer connection is established (Publishers only are disconnected; not viewers). In effect, this makes it impossible for the server to request future handshakes from you, and hence no more future peer connections.
+With `&secure`, the publisher or viewer disconnects from the handshake server after its first peer connection is established. No further peers can connect through that server until you refresh the page.
 
 The feature also makes the connection activity verbose, letting you know when someone starts watching your stream and when that viewer disconnects.
 
@@ -21827,7 +21852,7 @@ or for example
 If running from Windows command prompt, any ampersand "&" characters will need to be escaped with a "^" character, as seen below:
 
 ```
-C:\Users\Steve\Desktop>elecap -t feed2 --url https://vdo.ninja/?view=ePz9hnx^&scene^&codec=h264^&room=SOMETHINGTEST123
+C:\path\to\ElectronCapture>elecap -t feed2 --url https://vdo.ninja/?view=ePz9hnx^&scene^&codec=h264^&room=SOMETHINGTEST123
 ```
 
 You can also use it like this, if you are in the same folder as the app itself:

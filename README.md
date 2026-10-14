@@ -1,11 +1,11 @@
 
 <img src="https://github.com/user-attachments/assets/8134f167-2ea5-42e8-9450-b7aed322b6b0" width="300" />
 
-[![GitHub stars](https://img.shields.io/github/stars/steveseguin/vdoninja?style=social)](https://github.com/steveseguin/vdoninja)
-[![GitHub forks](https://img.shields.io/github/forks/steveseguin/vdoninja?style=social)](https://github.com/steveseguin/vdoninja/fork)
-[![GitHub release](https://img.shields.io/github/v/release/steveseguin/vdoninja?include_prereleases)](https://github.com/steveseguin/vdoninja/releases)
+[![GitHub stars](https://img.shields.io/github/stars/steveseguin/vdo.ninja?style=social)](https://github.com/steveseguin/vdo.ninja)
+[![GitHub forks](https://img.shields.io/github/forks/steveseguin/vdo.ninja?style=social)](https://github.com/steveseguin/vdo.ninja/fork)
+[![GitHub release](https://img.shields.io/github/v/release/steveseguin/vdo.ninja?include_prereleases)](https://github.com/steveseguin/vdo.ninja/releases)
 [![Discord](https://img.shields.io/discord/698324796546482177?color=7289DA&label=community&logo=discord&logoColor=white)](https://discord.vdo.ninja)
-[![Share on Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fsteveseguin%2Fvdoninja)](https://twitter.com/intent/tweet?text=Check%20out%20VDO.Ninja%20-%20Peer-to-peer%20video%20streaming%20for%20OBS%20and%20more!&url=https%3A%2F%2Fgithub.com%2Fsteveseguin%2Fvdoninja)
+[![Share on Twitter](https://img.shields.io/twitter/url?style=social&url=https%3A%2F%2Fgithub.com%2Fsteveseguin%2Fvdo.ninja)](https://twitter.com/intent/tweet?text=Check%20out%20VDO.Ninja%20-%20Peer-to-peer%20video%20streaming%20for%20OBS%20and%20more!&url=https%3A%2F%2Fgithub.com%2Fsteveseguin%2Fvdo.ninja)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/steveseguin/vdo.ninja/badge)](https://scorecard.dev/viewer/?uri=github.com/steveseguin/vdo.ninja)
 
 #### ⚠ Notice! We've rebranded from OBS.Ninja to VDO.Ninja - all else is staying the same ✨
@@ -19,7 +19,7 @@ VDO.Ninja brings peer-to-peer technology to OBS and other studio software, enabl
 * ⚡ High-quality video with super low latency
 * 💪 Director control room with group chat
 * 📱 Smartphone wireless webcam capabilities
-* 🌐 Supports WHIP/WHEP and self-hosted SFUs
+* 🌐 Supports WHIP/WHEP and self-hosted SFUs (media servers)
 * 🆓 Free software. Free managed services. Free support.
 
 <img src="https://user-images.githubusercontent.com/2575698/120865595-56de3b80-c55c-11eb-8b98-60c59ae0f904.png" height="300" />
@@ -30,7 +30,6 @@ VDO.Ninja brings peer-to-peer technology to OBS and other studio software, enabl
 * 📚 [Documentation](https://docs.vdo.ninja)
 * 🎯 [Subreddit](https://reddit.com/r/vdoninja)
 * 🧯 [Backup Deployment](https://backup.vdo.ninja)
-* 📱 Basic versions also available on [App Store](https://apps.apple.com/us/app/vdo-ninja/id1607609685) and [Play Store](https://play.google.com/store/apps/details?id=flutter.vdo.ninja)
 
 ## How to Use 📝
 
@@ -43,42 +42,14 @@ You can get started by just opening [VDO.Ninja](https://vdo.ninja/) in your brow
 Join the [Discord](https://discord.vdo.ninja) for community exhibitions, discussions, support, and feature updates.
 
 ## Alternative versions of VDO.Ninja
+
+* 📱 [Native iOS app — Apple App Store](https://apps.apple.com/us/app/vdo-ninja/id1607609685)
+* 📱 [Native Android app — Google Play](https://play.google.com/store/apps/details?id=flutter.vdo.ninja)
 * 🪟 [Mixer App with custom layouts](https://vdo.ninja/mixer)
 * 🏹 [WHIP/WHEP client](https://vdo.ninja/whip)
 * 📈 [Sharable Whiteboard](https://vdo.ninja/whiteboard)
 * 🕹️ [ESports Feed Manager](https://versus.cam)
 * 🌃 [Alpha-version updated nightly](https://vdo.ninja/alpha)
-
-## What's in this repo
-This repo contains the web client software for VDO.Ninja, along with many sample apps that leverage its IFRAME API. A sample config file and instructions for setting up an optional TURN video relay server is also provided here. The user documentation for VDO.Ninja itself is found at docs.vdo.ninja.
-
-## How to Deploy this Repo
-VDO.Ninja is available as a free-to-use hosted service at https://vdo.ninja, so deploying is optional. If you do wish to self-deploy the service however, details are provided below.
-
-Hosting a private/personal deployment can be as simple as hosting the files in this repository on a HTTPS-enabled webserver. For a very simple method on how to do this, there's a video guide here: https://www.youtube.com/watch?v=uYLKkX2_flY
-
-For more advanced users, you can see the [install.md](https://github.com/steveseguin/vdoninja/blob/master/install.md) file for alternative hosting options and more details on deploying additional system components. Limited technical support is provided for self-deployments, mainly due to how time-consuming such requests are, but the details to fully-deploy all required system components are provided in the install.md file. 
-
-If self-hosting, you might also wish to host your own video relay TURN server.  Directions on how to deploy a TURN server are listed in the [turnserver.md](turnserver.md) file. Only about ~ 5% of remote guests usually will need a TURN server, often those connected via 4G LTE or those behind a strict firewall, but most other users don't need one. While VDO.Ninja does host some pubiic TURN servers, they are quite expensive to operate, so please try to avoid abusing if possible. If you are deploying your own version of VDO.Ninja, I'd ask you to use your own TURN servers if you are capable of doing so; it's understandable if you aren't able to though.
-
-For users wishing to host VDO.Ninja offline (where no Internet is available), there's a repository with everything needed to deploy locally and offline here: https://github.com/steveseguin/offline_deployment. The offline version includes a Docker option, and there are some community-created Dockers available for online hosting. I may eventually offer an official Docker option designed for online users with heavier requirements, but I lack time and support to maintain such a project currently.
-
-### Develop vs Release versions
-
-The develop branch of this repo is a bit like the preview or nightly version of VDO.Ninja. It's intended to be functional, but it may not be that well tested, or there could be incomplete features. The develop version aligns closely with what is normally on vdo.ninja/alpha/, which is well suited for those wishing to submit code changes or to gain access to experimental new features. You can access a hosted version of the GitHub develop branch on Github pages here as well: https://steveseguin.github.io/vdo.ninja/
-
-Release versions of VDO.Ninja have their own branches though. These latest release branch will be updated to fix bugs or critical issues as needed, but are otherwise unchanged. https://github.com/steveseguin/vdo.ninja/branches
-
-Due to the nature of live video production, where unexpected changes to the app are not welcomed usually, I don't update https://vdo.ninja/ all that often. As well, constant updates to the primary hosted app makes supporting users challenging, as its hard to tell if an issue is with the code or with the user. For this reason, VDO.Ninja does infrequent updates to the primary hosted production version.  Users wanting newer features, or who have greater risk tolerance, should use alpha version at https://vdo.ninja/alpha/
-
-## Server side / API software
-Since VDO.Ninja uses peer-2-peer technology, video connections are made directly between viewer and publisher in 95% of cases. Hosting a TURN server yourself may help improve performance, but very few users will see an improvement to video quality by using one; most users will find using them harmful. They also will not help lower bandwidth usage or CPU usage, so generally you wish to avoid using them if possible.
-
-Details on how to deploy a TURN server are provided; see: [turnserver.md](turnserver.md). For those capable of hosting their own TURN server, that would be appreciated if possible, as TURN servers are the largest cost incurred by VDO.Ninja at present. (other than time, of course)
-
-Other than TURN servers, VDO.Ninja also uses public STUN servers and a hosted handshake server. These are used to facilitate the initial setup of peer connections and are generally not required after a peer connection is established. These servers are free to access and use, even for private deployments. You can host and customize your own handshake server as needed; please see details here: https://github.com/steveseguin/websocket_server
-
-A design goal of VDO.Ninja is to be serverless and we are near 99% of the way there. This design objective ensures VDO.Ninja can be offered for free, along with providing increased levels of security and privacy.
 
 ## Issues? problems? Not working?
 
@@ -91,24 +62,121 @@ Also check out the FAQ for common answers: https://docs.vdo.ninja or view recent
 I maintain a Youtube playlist with VDO.Ninja related content I create at https://www.youtube.com/watch?v=vLpRzMjUDaE&list=PLWodc2tCfAH1WHjl4WAOOoRSscJ8CHACe, however Youtube is full of community-created guides that are worth checking out.
 
 ## Related Projects
-### VDO.Ninja's Electron Capture:
-A better way to perform "Window Capturing" on desktop if OBS Browser Sources fails you. A downloadable tool designed to enhance VDO.Ninja, but has been expanded to have additional functionality for content creators in general
-[https://github.com/steveseguin/electroncapture](https://github.com/steveseguin/electroncapture)
 
-### Social Stream Ninja
-A free Chrome extension (also a Standalone app version is available now) that lets you stream and feature chat comments from Youtube, Twitch, Facebook, and more. Featured comments will appear directly in OBS or VMix as an overlay, or as a stream list of comments. It also includes a dock for more advanced function, such as text-to-speech, LLM bots, sentiment analysis, and saving messages to disk. No chroma-keying needed and the styling is pretty easy to customize without needing to modify the Chrome extension itself.
-[http://socialstream.ninja](http://socialstream.ninja)
+Steve maintains these apps and services for use with VDO.Ninja and live production. See the [full helper-app catalog](https://docs.vdo.ninja/steves-helper-apps) for setup guides, more utilities, and community tools.
 
-### Rasbperry Ninja
-Use a Linux system, Raspberry Pi, Nvidia Jetson, Mac, and even Windows PC (WSL) to publis or view WebRTC video using Gstreamer and Python; no browser needed . This project can use the system's local hardware encoder to enable high resolution video and even accelerated AV1 encoding. Support for USB, CSI, and HDMI video sources is available, along with options to pass-thru sources without transcoding. OpenCV-friendly, for low-latency computer vision and machine learning applications.
-[http://raspberry.ninja](https://github.com/steveseguin/raspberry_ninja)
+### Capture and native integrations
 
-### CAPTION.Ninja
-A free AI-based closed-captioning tool to add speech-to-text overlays to OBS Studio. It's browser-based with an easy OBS or VMix integration. Developed by Steve as well!
-[https://caption.ninja](https://caption.ninja)
+| Project | What it adds |
+| --- | --- |
+| [Game Capture](https://vdo.ninja/gamecapture) | A native Windows app for publishing games, app windows, and Spout2 sources to VDO.Ninja, with hardware encoding and window audio. Useful for esports feeds and VTuber workflows. |
+| [Ninja OBS Plugin](https://steveseguin.github.io/ninja-obs-plugin/) | Publish directly from OBS to VDO.Ninja, receive streams, and automatically add room participants as OBS sources. Supports OBS 32 on Windows, macOS, and Linux; the native receiver and transparent Game Capture workflow are experimental. |
+| [Custom OBS builds with improved WHIP support](https://github.com/steveseguin/obs-studio/releases) | Steve's OBS fork adds WHIP trickle ICE and improved TURN connectivity for VDO.Ninja. Releases include OBS 32.2.2 and OBS 33 beta builds for Windows, macOS, and Linux. Check each release's platform requirements and known limitations. |
+| [Electron Capture](https://github.com/steveseguin/electroncapture) | A desktop app for frameless playback and window capture of VDO.Ninja feeds and other web content, useful when an OBS Browser Source does not suit your setup. |
+| [VDO.Ninja Video Capture Extension](https://github.com/steveseguin/video_capture_extension) | Publish individual web videos or a browser tab with audio into VDO.Ninja. Requires Chrome or a compatible Chromium browser version 116 or newer; DRM-protected video cannot be captured. |
+| [Ninja VST3 Plugin](https://steveseguin.github.io/Ninja-VST3-Plugin/) | Send and receive VDO.Ninja audio inside supported DAWs. Currently Windows-only and tested with Reaper; this is an audio-only plugin. |
+| [Raspberry.Ninja](https://github.com/steveseguin/raspberry_ninja) | Publish or receive streams using Python and GStreamer without a browser, on Raspberry Pi, Linux, Jetson, macOS, or Windows via WSL. Supports hardware encoding, camera/capture inputs, WHIP output, and computer-vision workflows. |
+
+### Production services and overlays
+
+| Project | What it adds |
+| --- | --- |
+| [Meshcast](https://meshcast.io) / [Meshcast app](https://app.meshcast.io) | Server-assisted distribution for larger VDO.Ninja rooms and one-to-many streams, reducing the publisher's upload load. The newer app supports WHIP, RTMP, and SRT workflows; RTMP/SRT use requires an account. |
+| [Comms](https://comms.cam/) | Browser-based production intercom and talkback built on VDO.Ninja, with separate audio groups for hosts, crew, and backstage coordination. |
+| [app.invite.cam](https://app.invite.cam) | A managed lobby with reusable invitations, waiting lists, and host/helper controls for admitting guests into VDO.Ninja. Hosts sign in with Discord. |
+| [Social Stream Ninja](https://socialstream.ninja) | Combine live chat from YouTube, Twitch, and other platforms into OBS or vMix overlays. Available as a browser extension or standalone app, with featured comments, text-to-speech, bots, and message-saving tools. |
+| [Caption.Ninja](https://caption.ninja/) | Browser-based live captions and translation overlays for OBS and vMix. [Caption Local](https://github.com/steveseguin/caption-local) adds speech recognition on your own computer, with optional human review through Caption.Ninja. |
+| [Ninja Backer](https://ninjabacker.com) | Creator tipping pages and OBS alerts, integrated with VDO.Ninja's built-in tipping options. |
+
+### Controls and browser utilities
+
+| Project | What it adds |
+| --- | --- |
+| [VDO.Ninja Stream Deck Plugin](https://github.com/steveseguin/vdo-streamdeck) | Control microphones, cameras, guests, scenes, mixer layouts, and PTZ using Stream Deck keys and dials. Currently beta; not yet released in the Stream Deck marketplace. |
+| [Companion-Ninja](https://github.com/steveseguin/Companion-Ninja) | Remote-control tools and HTTP/WebSocket API examples for VDO.Ninja, including Bitfocus Companion workflows. |
+| [Screen Recorder](https://vdo.ninja/screenrecorder/) | Record tutorials and demos in a desktop browser using screen capture, webcam, microphone, and supported system audio, with local recording downloads. |
+| [Chat Lite](https://vdo.ninja/chat-lite/) | A lightweight Social Stream Ninja chat/activity view inside VDO.Ninja or a local browser pop-out. Use the full Social Stream Ninja overlays for a separate OBS Browser Source. |
+| [Icecast / AzuraCast helper](https://vdo.ninja/icecast) | Set up browser publishing of local audio or a received VDO.Ninja stream to an Icecast-compatible radio server. |
+| [Teleprompter Tool](https://vdo.ninja/teleprompter) | Flip, mirror, or rotate embeddable websites, chat overlays, and VDO.Ninja feeds for teleprompter displays. |
+
+## What's in this repo
+This repository contains the VDO.Ninja web frontend and sample apps using its IFRAME API. Production backend implementations and operational scripts belong in separate repositories. Optional TURN configuration and `.sample` files are included as self-hosting examples; the website does not execute them. TURN setup guidance is provided in [turnserver.md](turnserver.md). The user documentation for VDO.Ninja itself is found at docs.vdo.ninja.
+
+## Hosting and local development
+
+The public service is available at [vdo.ninja](https://vdo.ninja/). To host the frontend yourself, serve this repository from an HTTPS-enabled static web server. There is no frontend build step or package installation required.
+
+Choose the guide that matches your setup:
+
+| What you want to host | Guide | What it provides |
+| --- | --- | --- |
+| The website on your own web server | [Manual hosting](install.md) | Static website files; public VDO.Ninja connection services remain enabled by default. |
+| The website using Docker on a VPS, home server, or Raspberry Pi | [docker-vdon](https://github.com/steveseguin/docker-vdon) | An HTTPS website container; public VDO.Ninja connection services remain enabled by default. |
+| A local setup intended to work without internet | [offline_deployment](https://github.com/steveseguin/offline_deployment) | The website, a local secure handshake server, and certificate setup instructions. Start with the ordinary installation; Docker is optional. |
+
+For a local preview, run this from the repository root:
+
+```sh
+python -m http.server 8080 --bind 127.0.0.1
+```
+
+Open `http://localhost:8080/`. Use HTTPS when accessing the site from other devices. Local preview serves the frontend only; normal rooms still connect to the configured signaling and relay services.
+
+See [install.md](install.md) for deployment guidance and [turnserver.md](turnserver.md) for TURN setup examples. Hosting the frontend does not deploy the production authentication, signaling, relay, or call-in backends. Optional features may require separately configured services and credentials.
+
+Before publishing changes, run the repository's translation checks:
+
+```sh
+node .github/ci-validateTranslations.js
+node .github/ci-checkTranslationKeys.js
+```
+
+These checks require Node.js and do not cover browser behavior. Test the affected publishing, viewing, recording, or device-selection flows separately.
+
+### Develop vs Release versions
+
+The develop branch of this repo is a bit like the preview or nightly version of VDO.Ninja. It's intended to be functional, but it may not be that well tested, or there could be incomplete features. The develop version aligns closely with what is normally on vdo.ninja/alpha/, which is well suited for those wishing to submit code changes or to gain access to experimental new features. You can access a hosted version of the GitHub develop branch on Github pages here as well: https://steveseguin.github.io/vdo.ninja/
+
+Release versions of VDO.Ninja have their own branches though. These latest release branch will be updated to fix bugs or critical issues as needed, but are otherwise unchanged. https://github.com/steveseguin/vdo.ninja/branches
+
+Due to the nature of live video production, where unexpected changes to the app are not welcomed usually, I don't update https://vdo.ninja/ all that often. As well, constant updates to the primary hosted app makes supporting users challenging, as its hard to tell if an issue is with the code or with the user. For this reason, VDO.Ninja does infrequent updates to the primary hosted production version.  Users wanting newer features, or who have greater risk tolerance, should use alpha version at https://vdo.ninja/alpha/
+
+## Backend services and self-hosting
+
+The browser client uses signaling to establish ordinary rooms and peer connections. STUN helps discover network addresses; TURN relays traffic when a direct connection cannot be established. These services are separate from the static frontend.
+
+- **Signaling:** [websocket_server](https://github.com/steveseguin/websocket_server) provides standalone handshake servers. Its advanced routing server (`vdoninja_advanced.js`) uses the browser URL option **`wss2=`**; the older fanout servers use **`wss=`**. Use the matching option on both publisher and viewer links.
+- **TURN:** [turnserver.md](turnserver.md), `turnserver_basic.conf`, and the `.sample` files provide optional self-hosting examples. Replace placeholder settings before use. The website does not execute these samples.
+- **Twilio call-in:** requires an explicitly configured backend URL. The Twilio backend implementation and a hosted default are not included. SIP call-in instead uses the provider settings entered by the user.
+- **Live translation:** accepts a user-supplied API key or a separately configured token broker. An optional [token broker example](examples/realtime-translation-broker/README.md) is included for separate deployment.
+- **Offline deployments:** [offline_deployment](https://github.com/steveseguin/offline_deployment) combines the website with a local advanced routing server and disables automatic public STUN/TURN configuration in its prepared website. Its guide covers setup, connection checks, and optional internet-assisted connections.
+
+HTTPS is still required for phones and other remote clients on a private LAN. When using a private CA, install and trust its public root certificate on each client device; see the [certificate guide for browsers, OBS, and native apps](https://github.com/steveseguin/offline_deployment/blob/main/docs/certificates.md). Native apps can handle certificate trust differently from browsers, so follow the app-specific notes there.
+
+Self-hosting the frontend does not automatically make a deployment independent of hosted services. Review the features you enable and their configured endpoints. See [LICENCE.md](LICENCE.md) for the distinction between the software license and access to hosted services.
+
+## How VDO.Ninja works
+
+VDO.Ninja sends audio and video directly between the devices in a session using WebRTC. The website only delivers the app to each browser, and the signaling (handshake) server only helps the devices find each other and exchange connection details; neither carries the live stream. Two devices on the same local network usually keep the stream on that network, but loading the page and completing the handshake still need internet access unless you run the [offline deployment](https://github.com/steveseguin/offline_deployment).
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="images/how-vdoninja-connects-dark.png" />
+  <source media="(prefers-color-scheme: light)" srcset="images/how-vdoninja-connects.png" />
+  <img alt="The website sends app files to both devices over HTTPS. Signaling exchanges connection details over WSS. A separate WebRTC connection carries encrypted audio and video from publisher to viewer." src="images/how-vdoninja-connects.png" />
+</picture>
+
+When a direct route is not possible, a TURN server relays the encrypted packets without decoding them. With optional [Meshcast](https://meshcast.io), or another SFU (a media server that receives one upload and forwards it to many viewers), the publisher sends one stream and the server distributes it.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="images/how-vdoninja-media-travels-dark.png" />
+  <source media="(prefers-color-scheme: light)" srcset="images/how-vdoninja-media-travels.png" />
+  <img alt="Media can travel directly between peers, through a TURN relay while remaining encrypted between peers, or through optional Meshcast distribution, where the publisher uploads once and Meshcast sends the stream to multiple viewers." src="images/how-vdoninja-media-travels.png" />
+</picture>
+
+See [How does it work](https://docs.vdo.ninja/master/how-does-it-work) in the docs for each part in detail. For your own website or a fully local setup, see the [hosting guides](#hosting-and-local-development).
 
 ## Privacy
-I try to avoid data collection whenever possible and video streams are generally designed to be private, but use at your own risk. It is best to not share links created with VDO.Ninja with those you do not trust. I've provided instructions on how to deploy a TURN server if IP-address privacy is an issue for you. See: [turnserver.md](turnserver.md) 
+I try to avoid data collection whenever possible and video streams are generally designed to be private, but use at your own risk. It is best to not share links created with VDO.Ninja with those you do not trust. I've provided instructions on how to deploy a TURN server if IP-address privacy is an issue for you. See: [turnserver.md](turnserver.md)
 
 https://vdo.ninja may unavoidably use cookies that are exempt from EU laws of requiring notice of their use; they are exempt as they are required and necessary for the technical functioning of the web service. Our webserver is cached by Cloudflare and it provides denial of server protection for the users of VDO.Ninja.
 
@@ -119,13 +187,13 @@ Please see: [Terms of Service](https://docs.vdo.ninja/help/privacy-and-security-
 ## Feedback
 Ideas, feedback, bugs, etc -- all welcomed.  I'm dumping many of my ideas as issues into Github. Feedback is typically most welcomed via Email or Discord.
 
-## Licence 
-VDO.Ninja is available as 'mostly' open-source; please see the LICENCE.md file for details.
+## Licence
+See [LICENCE.md](LICENCE.md) for licensing and ownership details, [LICENSE](LICENSE) for the full core license, and [examples/LICENSE](examples/LICENSE) for the example-code license.
 
 ## Credit
 Thank you to everyone who has helped support this project so far. From the moderators, volunteers helping with support, those contributing media assets, the project sponsors, those reporting issues, those offering feedback, and any code submissions.
 
 ## Contributors of this repo
-<a href="https://github.com/steveseguin/vdoninja/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=steveseguin/vdoninja" />
+<a href="https://github.com/steveseguin/vdo.ninja/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=steveseguin/vdo.ninja" />
 </a>
